@@ -1,11 +1,11 @@
 <header class="bg-gray-800 p-4 shadow-md">
     <div class="container mx-auto flex justify-between items-center">
         <!-- Logo -->
-        <a href="{{route('dashboard')}}">
+        <a href="{{ route('dashboard') }}">
             <div class="flex justify-start items-center gap-2">
-                <img src="{{asset('images/logo/logorgb.png')}}" alt="Logo" class="h-12">
+                <img src="{{ asset('images/logo/logorgb.png') }}" alt="Logo" class="h-12">
                 <b>
-                    <p class="text-lg text-gray-200">PT. Rajabuana</p>
+                    <p class="text-lg text-gray-200">PT. Rajawali <br> Buana 86ss</p>
                 </b>
             </div>
         </a>
@@ -20,14 +20,17 @@
             </div>
 
             <!-- Dropdown -->
-            <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-gray-600 rounded-md shadow-lg py-2 z-20">
-                <a href="{{ route('profile.edit', Auth::user()->id) }}" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-800">
+            <div id="profileDropdown"
+                class="hidden absolute right-0 mt-2 w-48 bg-gray-600 rounded-md shadow-lg py-2 z-20">
+                <a href="{{ route('profile.edit', Auth::user()->id) }}"
+                    class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-800">
                     Profile
                 </a>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-gray-800">
+                    <button type="submit"
+                        class="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-gray-800">
                         Logout
                     </button>
                 </form>
@@ -49,31 +52,36 @@
     <div class="container mx-auto p-4 flex justify-between">
 
         <!-- Home Icon -->
-        <a href="{{route('dashboard')}}" class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="home">
+        <a href="{{ route('dashboard') }}" class="text-center flex justify-center items-center gap-2 flex-col nav-item"
+            id="home">
             <i class="fas fa-home text-2xl text-gray-300"></i>
             <span class="text-sm text-gray-300">Home</span>
         </a>
 
         <!-- Keuangan Icon -->
-        <a href="{{route('keuangan.index')}}" class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="keuangan">
+        <a href="{{ route('keuangan.index') }}"
+            class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="keuangan">
             <i class="fas fa-wallet text-2xl text-gray-300"></i>
             <span class="text-sm text-gray-300">Keuangan</span>
         </a>
 
         <!-- Operational Icon -->
-        <a href="{{route('oprational.index')}}" class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="operational">
+        <a href="{{ route('oprational.index') }}"
+            class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="operational">
             <i class="fas fa-cogs text-2xl text-gray-300"></i>
             <span class="text-sm text-gray-300">Operational</span>
         </a>
 
         <!-- HRD Icon -->
-        <a href="{{route('hrd.index')}}" class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="hrd">
+        <a href="{{ route('hrd.index') }}" class="text-center flex justify-center items-center gap-2 flex-col nav-item"
+            id="hrd">
             <i class="fas fa-users text-2xl text-gray-300"></i>
             <span class="text-sm text-gray-300">HRD</span>
         </a>
 
         <!-- Profile Icon -->
-        <a href="{{route('marketing.index')}}" class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="marketing">
+        <a href="{{ route('marketing.index') }}"
+            class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="marketing">
             <i class="fas fa-building text-2xl text-gray-300"></i>
             <span class="text-sm text-gray-300">Marketing</span>
         </a>

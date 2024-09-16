@@ -10,9 +10,12 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link rel="shortcut icon" href="{{asset('images/logo/logorgb.png')}}" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/hyperswitch/dist/hs.css">
+    <script src="https://unpkg.com/hyperswitch/dist/hs.js"></script>
+    <link rel="shortcut icon" href="{{ asset('images/logo/logorgb.png') }}" type="image/x-icon">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -23,11 +26,11 @@
         @include('layouts.navigation')
         <!-- Page Heading -->
         @isset($header)
-        <header class="bg-gray-800 shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                {{ $header }}
-            </div>
-        </header>
+            <header class="bg-gray-800 shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
         @endisset
 
         <!-- Page Content -->
@@ -35,6 +38,27 @@
             {{ $slot }}
         </main>
     </div>
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: "{{ session('error') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        @endif
+    </script>
 </body>
 
 </html>

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\rgb;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class DataRgbController extends Controller
 {
@@ -24,7 +26,8 @@ class DataRgbController extends Controller
      */
     public function create()
     {
-        return view('admin.hrd.rgb.data.data');
+        $data = Area::all();
+        return view('admin.hrd.rgb.data.data', compact('data'));
     }
 
     /**
@@ -32,15 +35,40 @@ class DataRgbController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Ambil semua data inputan form
+        $data = $request->all();
+
+        // Hash password menggunakan Hash facade bawaan Laravel
+        $data['password'] = Hash::make($request->nik);
+
+        // Menggabungkan sim_option jika ada pilihan SIM yang di-check
+        if ($request->has('sim_option')) {
+            $data['sim'] = implode(',', $request->sim_option);
+        }
+
+        if ($request->has('kta_option')) {
+            $data['kta'] = implode(',', $request->kta_option);
+        }
+
+        if ($request->has('ijazah') && $request->has('ijazah_level')) {
+            $data['ijazah'] = $request->ijazah_level;
+        }
+
+        // Simpan data ke dalam database
+        User::create($data);
+
+        // Redirect atau berikan response setelah data tersimpan
+        return redirect()->route('DataRgb.index')->with('success', 'Data berhasil disimpan.');
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('admin.hrd.rgb.data.detail', compact('user'));
     }
 
     /**
@@ -49,9 +77,10 @@ class DataRgbController extends Controller
     public function edit(string $id)
     {
         $account = User::findOrFail($id);
+        $data = Area::all();
 
         // Return the edit view with the account data
-        return view('admin.hrd.rgb.data.edit', compact('account'));
+        return view('admin.hrd.rgb.data.edit', compact('account', 'data'));
     }
 
     /**
@@ -59,7 +88,41 @@ class DataRgbController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $account = User::findOrFail($id);
+
+        // Ambil semua data inputan form
+        $data = $request->all();
+
+        // Jika ingin mengupdate password, kita hash password menggunakan Hash facade Laravel
+        // Sesuai dengan logika Anda, password di-hash berdasarkan NIK
+        if ($request->has('nik')) {
+            $data['password'] = Hash::make($request->nik);
+        }
+
+        // Menggabungkan sim_option jika ada pilihan SIM yang di-check
+        if ($request->has('sim_option')) {
+            $data['sim'] = implode(',', $request->sim_option);
+        } else {
+            $data['sim'] = null;
+        }
+
+        // Menggabungkan kta_option jika ada pilihan KTA yang di-check
+        if ($request->has('kta_option')) {
+            $data['kta'] = implode(',', $request->kta_option);
+        } else {
+            $data['kta'] = null;
+        }
+
+        // Jika ijazah dan level ijazah diinput, set sesuai input
+        if ($request->has('ijazah') && $request->has('ijazah_level')) {
+            $data['ijazah'] = $request->ijazah_level;
+        }
+
+        // Update data ke dalam database
+        $account->update($data);
+
+        // Redirect atau berikan response setelah data tersimpan
+        return redirect()->route('DataRgb.index')->with('success', 'Data berhasil diperbarui.');
     }
 
     /**
@@ -67,6 +130,8 @@ class DataRgbController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = User::findOrFail($id);
+        $data->delete();
+        return redirect()->route('DataRgb.index')->with('success', 'Data Berhasil dihapus');
     }
 }

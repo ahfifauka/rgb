@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\rgb;
 
 use App\Http\Controllers\Controller;
+use App\Models\Surat;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -14,8 +15,12 @@ class AkunRgbController extends Controller
     public function index()
     {
         $data = User::all();
+        $suratStatus = Surat::whereIn('nik', $data->pluck('nik'))
+            ->get()
+            ->groupBy('nik');
         return view('admin.hrd.rgb.akun.index', [
             'data' => $data,
+            'suratStatus' => $suratStatus,
         ]);
     }
 
@@ -24,7 +29,7 @@ class AkunRgbController extends Controller
      */
     public function create()
     {
-        return view('admin.hrd.rgb.akun.akun');
+        //
     }
 
     /**
@@ -51,7 +56,15 @@ class AkunRgbController extends Controller
         $account = User::findOrFail($id);
 
         // Return the edit view with the account data
-        return view('admin.hrd.rgb.akun.akun', compact('account'));
+        return view('admin.hrd.rgb.akun.surat', compact('account'));
+    }
+
+    public function card(string $id)
+    {
+        $account = User::findOrFail($id);
+
+        // Return the edit view with the account data
+        return view('admin.hrd.rgb.akun.edit', compact('account'));
     }
 
     /**

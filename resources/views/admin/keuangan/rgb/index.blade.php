@@ -37,7 +37,7 @@
         </a>
 
         <!-- Card for Invoice -->
-        <a href="#"
+        <a href="{{ route('invoice.index') }}"
             class="block bg-gray-800 shadow-md rounded-lg p-2 sm:p-4 w-20 h-20 sm:w-60 sm:h-40 lg:w-60 lg:h-40 flex flex-col items-center text-center hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
             <div
                 class="bg-purple-500 text-white rounded-full p-1 sm:p-2 mb-2 sm:mb-4 flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12">

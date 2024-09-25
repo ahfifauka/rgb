@@ -1,27 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\rgb;
 
+use App\Http\Controllers\Controller;
+use App\Models\LaporanM;
 use Illuminate\Http\Request;
 
-class MarketingController extends Controller
+class LaporanRgbController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.marketing.index');
+        $data = LaporanM::all();
+        return view('admin.marketing.rgb.laporan.index', compact('data'));
     }
 
-    public function rgb()
-    {
-        return view('admin.marketing.rgb.index');
-    }
-    public function rbm()
-    {
-        //
-    }
     /**
      * Show the form for creating a new resource.
      */

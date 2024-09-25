@@ -1,24 +1,37 @@
 <?php
 
+//luaran/RGB & RBM
+
+use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\DanruController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HrdController;
 use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\KorwilController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\OprationalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UmrController;
+//RBM/Controller
 use App\Http\Controllers\rbm\KeuanganRbmController;
+//RGB/Controller
 use App\Http\Controllers\rgb\AkunRgbController;
 use App\Http\Controllers\rgb\AreaRgbController;
 use App\Http\Controllers\rgb\DataRgbController;
 use App\Http\Controllers\rgb\InventarisRgbController;
+use App\Http\Controllers\rgb\InvoiceRgbController;
 use App\Http\Controllers\rgb\JadwalRgbController;
 use App\Http\Controllers\rgb\KasRgbController;
 use App\Http\Controllers\rgb\KeuanganRgbController;
+use App\Http\Controllers\rgb\LaporanRgbController;
+use App\Http\Controllers\rgb\MarketingPlanRgbController;
+use App\Http\Controllers\rgb\PatroliController;
 use App\Http\Controllers\rgb\PatroliRgbController;
 use App\Http\Controllers\rgb\PenggajianRgbController;
 use App\Http\Controllers\rgb\PresensiRgbController;
+use App\Http\Controllers\rgb\TimeScheduleRgbController;
 use App\Http\Controllers\SuratController;
-use App\Http\Controllers\UmrController;
+
 use App\Models\Surat;
 use App\Models\User;
 //rgb
@@ -43,16 +56,20 @@ Route::middleware('auth')->group(function () {
     Route::get('keuangan', [KeuanganController::class, 'index'])->name('keuangan.index');
     Route::get('keuangan/rgb', [KeuanganController::class, 'rgb'])->name('keuangan.rgb');
     Route::get('keuangan/rbm', [KeuanganController::class, 'rbm'])->name('keuangan.rbm');
+
     //keuangan-umr
     Route::get('umr/index', [UmrController::class, 'index'])->name('umr.index');
     Route::post('umr/store', [UmrController::class, 'store'])->name('umr.store');
     Route::get('umr/edit/{id}', [UmrController::class, 'edit'])->name('umr.edit');
     Route::put('umr/update/{id}', [UmrController::class, 'update'])->name('umr.update');
     Route::delete('umr/destroy/{id}', [UmrController::class, 'destroy'])->name('umr.destroy');
+
     //keuangan-area
     Route::resource('Area', AreaRgbController::class);
+
     //keuangan-kas
     Route::resource('kas', KasRgbController::class);
+
     //keuangan-penggajian
     Route::resource('penggajian', PenggajianRgbController::class);
     //keuangan-penggajian-ppn
@@ -60,6 +77,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-users-by-area', [PenggajianRgbController::class, 'getUsersByArea'])->name('getUsersByArea');
     //keuangan-penggajian-nonppn
     Route::get('nonppn/penggajian', [PenggajianRgbController::class, 'nonppn'])->name('non.penggajian');
+
+    //keuangan-Invoice
+    Route::resource('invoice', InvoiceRgbController::class);
 
     //oprational
     Route::get('oprational', [OprationalController::class, 'index'])->name('oprational.index');
@@ -100,6 +120,26 @@ Route::middleware('auth')->group(function () {
 
     //marketing
     Route::resource('marketing', MarketingController::class);
+    Route::get('/rgb/marketing', [MarketingController::class, 'rgb'])->name('rgb.Marketing');
+    Route::get('/rbm/marketing', [MarketingController::class, 'rbm'])->name('rbm.Marketing');
+    //marketing-marketing_plan
+    Route::resource('MarketingPlan', MarketingPlanRgbController::class);
+    //marketing-timeschedule
+    Route::resource('TimeSchedule', TimeScheduleRgbController::class);
+    //marketing-laporan_harian
+    Route::resource('laporan', LaporanRgbController::class);
+
+
+
+
+    //anggota atau users
+    Route::resource('anggota', AnggotaController::class);
+    Route::get('/pulang/{id}', [PresensiRgbController::class, 'pulang'])->name('presensi.pulang');
+    Route::resource('patroli', PatroliController::class);
+    //anggota-danru
+    Route::resource('danru', DanruController::class);
+    //anggota-Korwil
+    Route::resource('korwil', KorwilController::class);
 });
 
 require __DIR__ . '/auth.php';

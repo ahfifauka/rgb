@@ -130,7 +130,7 @@
                                         <input type="number" name="backup" value="" class="w-full rounded-md border-gray-300 bg-gray-200 text-black">
                                     </div>
                                     <div>
-                                        <label for="potongan" class="block text-gray-300">Potongan</label>
+                                        <label for="potongan" class="block text-gray-300">PPH 21</label>
                                         <input type="number" name="potongan" value="" class="w-full rounded-md border-gray-300 bg-gray-200 text-black">
                                     </div>
                                     <div>

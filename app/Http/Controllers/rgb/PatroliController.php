@@ -1,33 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\rgb;
 
+use App\Http\Controllers\Controller;
+use App\Models\Patroli;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class MarketingController extends Controller
+class PatroliController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.marketing.index');
+        $user = Auth::user();
+        $data = Patroli::where('nik', $user->nik)->get();
+        return view('user.anggota.patroli.index', compact('data'));
     }
 
-    public function rgb()
-    {
-        return view('admin.marketing.rgb.index');
-    }
-    public function rbm()
-    {
-        //
-    }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('user.anggota.patroli.create');
     }
 
     /**

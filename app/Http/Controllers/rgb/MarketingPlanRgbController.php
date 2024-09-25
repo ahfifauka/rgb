@@ -1,27 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\rgb;
 
+use App\Http\Controllers\Controller;
+use App\Models\MarketingP;
 use Illuminate\Http\Request;
 
-class MarketingController extends Controller
+class MarketingPlanRgbController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.marketing.index');
+        $data = MarketingP::all();
+        return view('admin.marketing.rgb.marketing.index', compact('data'));
     }
 
-    public function rgb()
-    {
-        return view('admin.marketing.rgb.index');
-    }
-    public function rbm()
-    {
-        //
-    }
     /**
      * Show the form for creating a new resource.
      */

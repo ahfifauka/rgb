@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Patroli;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PatroliRgbController extends Controller
 {
@@ -31,7 +32,8 @@ class PatroliRgbController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Handle photo uploads
+        
     }
 
     /**

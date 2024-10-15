@@ -135,7 +135,7 @@ Route::middleware('auth')->group(function () {
     //anggota atau users
     Route::resource('anggota', AnggotaController::class);
     Route::get('/pulang/{id}', [PresensiRgbController::class, 'pulang'])->name('presensi.pulang');
-    Route::resource('patroli', PatroliController::class);
+    Route::resource('patroliU', PatroliController::class);
     //anggota-danru
     Route::resource('danru', DanruController::class);
     //anggota-Korwil

@@ -24,6 +24,7 @@ class PresensiRgbController extends Controller
         $data = $anggota->map(function ($anggota) use ($presensiData) {
             $anggotaPresensi = $presensiData->where('nik', $anggota->nik);
             $status = [];
+            $timestamps = [];
             $today = now(); // Current date and time
 
             for ($i = 1; $i <= 31; $i++) {
@@ -34,8 +35,13 @@ class PresensiRgbController extends Controller
 
                 if ($presensi) {
                     $status[$i] = 'M'; // Present
+                    $timestamps[$i] = [
+                        'created_at' => $presensi->created_at->format('H:i'),
+                        'updated_at' => $presensi->updated_at->format('H:i'),
+                    ];
                 } else {
                     $status[$i] = $today->day < $i ? 'B' : 'TK'; // 'B' if the date is in the future, 'TK' otherwise
+                    $timestamps[$i] = null;
                 }
             }
 
@@ -44,6 +50,7 @@ class PresensiRgbController extends Controller
                 'nik' => $anggota->nik,
                 'area' => $anggota->area,
                 'status' => $status,
+                'timestamps' => $timestamps,
                 'counts' => [
                     'M' => array_count_values($status)['M'] ?? 0,
                     'TK' => array_count_values($status)['TK'] ?? 0,
@@ -136,7 +143,7 @@ class PresensiRgbController extends Controller
      */
     public function show(string $id)
     {
-        $user = Presensi::findOrFail($id);
+        $user = User::findOrFail($id);
         $data = Presensi::where('nik', $user->nik)->get();
         return view('user.anggota.presensi.data', compact('data'));
     }

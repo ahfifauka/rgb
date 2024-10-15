@@ -54,6 +54,14 @@ class DataRgbController extends Controller
             $data['ijazah'] = $request->ijazah_level;
         }
 
+        if ($request->has('bpjs_naker') && $request->has('bpjs_naker')) {
+            $data['bpjs_naker'] = $request->bpjs_naker;
+        }
+
+        if ($request->has('bpjs_nakes') && $request->has('bpjs_nakes')) {
+            $data['bpjs_nakes'] = $request->bpjs_nakes;
+        }
+
         // Simpan data ke dalam database
         User::create($data);
 

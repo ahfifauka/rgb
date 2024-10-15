@@ -24,20 +24,20 @@
 <body class="font-sans antialiased bg-gray-900 text-gray-200">
     <div class="min-h-screen bg-gray-900">
         @if (Auth::user()->role == 'admin')
-            @include('layouts.navigation')
+        @include('layouts.navigation')
         @elseif (Auth::user()->role == 'user')
-            @include('layouts.navigation2')
+        @include('layouts.navigation2')
         @else
-            @include('layouts.navigation')
+        @include('layouts.navigation')
         @endif
 
         <!-- Page Heading -->
         @isset($header)
-            <header class="bg-gray-800 shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
+        <header class="bg-gray-800 shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
         @endisset
 
         <!-- Page Content -->
@@ -46,23 +46,23 @@
         </main>
     </div>
     <script>
-        @if (session('success'))
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "{{ session('success') }}",
-                showConfirmButton: false,
-                timer: 1500
-            });
+        @if(session('success'))
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "{{ session('success') }}",
+            showConfirmButton: false,
+            timer: 1500
+        });
         @endif
-        @if (session('error'))
-            Swal.fire({
-                position: "top-end",
-                icon: "error",
-                title: "{{ session('error') }}",
-                showConfirmButton: false,
-                timer: 1500
-            });
+        @if(session('error'))
+        Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "{{ session('error') }}",
+            showConfirmButton: false,
+            timer: 1500
+        });
         @endif
     </script>
 </body>

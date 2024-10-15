@@ -59,32 +59,40 @@
         </a>
 
         <!-- Keuangan Icon -->
+        @if( Auth::user()->jabatan == 'Administrasi' || Auth::user()->jabatan == 'direktur')
         <a href="{{ route('keuangan.index') }}"
             class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="keuangan">
             <i class="fas fa-wallet text-2xl text-gray-300"></i>
             <span class="text-sm text-gray-300">Keuangan</span>
         </a>
+        @endif
 
         <!-- Operational Icon -->
+        @if( Auth::user()->jabatan == 'Oprational' || Auth::user()->jabatan == 'direktur')
         <a href="{{ route('oprational.index') }}"
             class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="operational">
             <i class="fas fa-cogs text-2xl text-gray-300"></i>
             <span class="text-sm text-gray-300">Operational</span>
         </a>
+        @endif
 
         <!-- HRD Icon -->
+        @if( Auth::user()->jabatan == 'Hrd' || Auth::user()->jabatan == 'direktur')
         <a href="{{ route('hrd.index') }}" class="text-center flex justify-center items-center gap-2 flex-col nav-item"
             id="hrd">
             <i class="fas fa-users text-2xl text-gray-300"></i>
             <span class="text-sm text-gray-300">HRD</span>
         </a>
+        @endif
 
         <!-- Profile Icon -->
+        @if( Auth::user()->jabatan == 'Marketing' || Auth::user()->jabatan == 'direktur')
         <a href="{{ route('marketing.index') }}"
             class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="marketing">
             <i class="fas fa-building text-2xl text-gray-300"></i>
             <span class="text-sm text-gray-300">Marketing</span>
         </a>
+        @endif
 
     </div>
 </nav>

@@ -32,7 +32,22 @@ class PatroliController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $areaPhotoPath = $request->file('foto_sekitar') ? $request->file('foto_sekitar')->store('patroli', 'public') : null;
+        $personPhotoPath = $request->file('foto_anggota') ? $request->file('foto_anggota')->store('patroli', 'public') : null;
+
+        // Create a new Patroli record (assuming you have a Patroli model)
+        Patroli::create([
+            'name' => $request->input('name'),
+            'nik' => $request->input('nik'),
+            'lokasi' => $request->input('lokasi'),
+            'foto_sekitar' => $areaPhotoPath,
+            'foto_anggota' => $personPhotoPath,
+            'situasi' => $request->input('situasi'),
+            'keterangan' => $request->input('keterangan'),
+        ]);
+
+        // Redirect or return response
+        return redirect()->route('patroliU.create')->with('success', 'Data Patroli successfully saved!');
     }
 
     /**

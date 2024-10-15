@@ -7,11 +7,13 @@
 
     <div class="p-6">
         <!-- Button to Open Form -->
-        <a href="{{ route('DataRgb.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-            Tambah Data
-        </a>
-        <a href="{{ route('hrd.rgb') }}"
-            class="ml-2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Kembali</a>
+        <div class="flex gap-2">
+            <a href="{{ route('DataRgb.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                Tambah Data
+            </a>
+            <a href="{{ route('hrd.rgb') }}"
+                class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Kembali</a>
+        </div>
 
         <!-- Search and Page Length -->
         <div class="mt-4 mb-4 flex justify-between items-center">
@@ -47,31 +49,31 @@
                 <tbody>
                     <!-- Sample Data -->
                     @foreach ($data as $account)
-                        <tr>
-                            <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->name }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->nik }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->username }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->jabatan }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->level }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->nohp }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->area }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->kta }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->jenis_kelamin }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->sim }}</td>
-                            <td class="p-3 text-center">
-                                <a href="{{ route('DataRgb.show', $account->id) }}"
-                                    class="text-green-500 hover:underline">Detail</a>
-                                <a href="{{ route('DataRgb.edit', $account->id) }}"
-                                    class="text-blue-500 hover:underline">Edit</a>
-                                <form action="{{ route('DataRgb.destroy', $account->id) }}" method="POST"
-                                    class="inline-block ml-2">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->name }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->nik }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->username }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->jabatan }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->level }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->nohp }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->area }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->kta }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->jenis_kelamin }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->sim }}</td>
+                        <td class="p-3 text-center">
+                            <a href="{{ route('DataRgb.show', $account->id) }}"
+                                class="text-green-500 hover:underline">Detail</a>
+                            <a href="{{ route('DataRgb.edit', $account->id) }}"
+                                class="text-blue-500 hover:underline">Edit</a>
+                            <form action="{{ route('DataRgb.destroy', $account->id) }}" method="POST"
+                                class="inline-block ml-2">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>

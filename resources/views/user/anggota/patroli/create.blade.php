@@ -1,108 +1,143 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-200 leading-tight">
-            {{ __('Patroli') }}
+            {{ __('QR Code Scanner') }}
         </h2>
     </x-slot>
 
     <div class="p-6 flex justify-center flex-col items-center">
-        <div id="qr-reader" style="width: 100%; max-width: 600px; height: auto;"></div>
-    </div>
+        <div id="reader" style="width: 300px; border-radius: 15px; overflow: hidden; border: 2px solid #4a5568;"></div>
 
-    <!-- Modal -->
-    <div id="qrModal"
-        class="modal fixed inset-0 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
-        <div class="modal-content bg-white rounded shadow-lg p-6 scale-75 transition-transform duration-300">
-            <span id="modal-close" class="cursor-pointer text-red-500 float-right">&times;</span>
-            <h3 class="text-lg font-semibold">Scanned QR Code</h3>
-            <p id="qr-code-data" class="mt-4"></p>
+        <!-- Dark-themed Modal -->
+        <div id="myModal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+            <form action="{{ route('patroliU.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="flex items-center justify-center h-full p-4">
+                    <div class="bg-gray-800 rounded-lg p-6 w-full">
+                        <h2 class="text-lg font-semibold text-white mb-4">Patroli</h2>
+                        <input type="hidden" name="name" value="{{ Auth::user()->name }}">
+                        <input type="hidden" name="nik" value="{{ Auth::user()->nik }}">
+                        <input type="text" name="lokasi" id="qrDataInput" class="border rounded w-full p-2 mb-4 text-black" placeholder="Data from QR Code" readonly>
+
+                        <!-- Input for Area Photo -->
+                        <label class="text-white mb-2 block" for="areaPhoto">Area Photo:</label>
+                        <input type="file" id="areaPhoto" name="foto_sekitar" class="border rounded w-full p-2 mb-4" accept="image/*">
+
+                        <!-- Input for Person Photo -->
+                        <label class="text-white mb-2 block" for="personPhoto">Person Photo:</label>
+                        <input type="file" id="personPhoto" name="foto_anggota" class="border rounded w-full p-2 mb-4" accept="image/*">
+
+                        <!-- Select option for safety status -->
+                        <label class="text-white mb-2 block" for="safetyStatus">Safety Status:</label>
+                        <select id="safetyStatus" name="situasi" class="border rounded w-full p-2 mb-4 text-black">
+                            <option value="">Select Status</option>
+                            <option value="Aman">Aman</option>
+                            <option value="Tidak Aman">Tidak Aman</option>
+                        </select>
+
+                        <!-- Text area for details -->
+                        <label class="text-white mb-2 block" for="details">Details:</label>
+                        <textarea id="details" name="keterangan" class="border rounded w-full p-2 mb-4 text-black" rows="2" placeholder="Type your details here..."></textarea>
+
+                        <div class="flex justify-between">
+                            <button type="button" id="closeModalBtn" class="bg-red-500 text-white px-4 py-2 rounded">Close</button>
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
+    <!-- Include HTML5 QR Code Library -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const html5QrCode = new Html5Qrcode("qr-reader");
+        const html5QrCode = new Html5Qrcode("reader");
 
-            async function startScanner() {
-                const constraints = {
-                    facingMode: "environment"
-                };
-
-                try {
-                    await html5QrCode.start(
-                        constraints, {
-                            fps: 10,
-                            qrbox: {
-                                width: 250,
-                                height: 250
-                            } // Adjust QR box size
-                        },
-                        (decodedText, decodedResult) => {
-                            console.log(`QR Code detected: ${decodedText}`);
-                            showModal(decodedText); // Show modal with the scanned data
-                        },
-                        (errorMessage) => {
-                            console.warn(`QR Code no longer in front of camera. ${errorMessage}`);
-                        }
-                    );
-                } catch (err) {
-                    console.error(`Failed to start QR Code scanner: ${err}`);
-                }
+        // Start scanning
+        html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 },
+            qrCodeMessage => {
+                // On successful scan
+                document.getElementById('qrDataInput').value = qrCodeMessage; // Set the QR code message to the input field
+                document.getElementById('myModal').classList.remove('hidden'); // Show the modal
+            },
+            errorMessage => {
+                // Handle errors
+                console.warn(`QR Code scan error: ${errorMessage}`);
             }
-
-            function showModal(qrData) {
-                // Display the scanned QR code data in the modal
-                document.getElementById("qr-code-data").innerText = qrData;
-
-                const modal = document.getElementById("qrModal");
-                modal.classList.remove("hidden");
-                modal.classList.remove("opacity-0");
-                modal.classList.add("opacity-100");
-                modal.querySelector('.modal-content').classList.remove("scale-75");
-                modal.querySelector('.modal-content').classList.add("scale-100");
-            }
-
-            document.getElementById("modal-close").addEventListener("click", () => {
-                const modal = document.getElementById("qrModal");
-                modal.classList.add("opacity-0");
-                modal.querySelector('.modal-content').classList.add("scale-75");
-
-                setTimeout(() => {
-                    modal.classList.add("hidden");
-                    html5QrCode.stop(); // Stop the scanner when closing the modal
-                    startScanner(); // Restart scanner after closing modal
-                }, 300); // Match the duration of the transition
-            });
-
-            startScanner(); // Start the scanner when the page loads
+        ).catch(err => {
+            console.error(`Failed to start scanning: ${err}`);
         });
+
+        // Close the modal
+        document.getElementById('closeModalBtn').onclick = function() {
+            document.getElementById('myModal').classList.add('hidden'); // Hide the modal
+        };
+
+        // Automatically open camera for file input
+        const openCameraForFileInput = (fileInput) => {
+            fileInput.addEventListener('change', (event) => {
+                const files = event.target.files;
+                if (files.length > 0) {
+                    const fileURL = URL.createObjectURL(files[0]);
+                    const img = new Image();
+                    img.src = fileURL;
+                    img.onload = () => {
+                        // Process the image if needed or show it
+                        console.log('Image loaded:', img.src);
+                    };
+                }
+            });
+        };
+
+        openCameraForFileInput(document.getElementById('areaPhoto'));
+        openCameraForFileInput(document.getElementById('personPhoto'));
     </script>
 
     <style>
-        /* Mobile-friendly styles */
-        #qr-reader {
-            height: auto;
+        /* Dark Theme Modal Styling */
+        #myModal {
+            background: rgba(0, 0, 0, 0.7);
+            /* Dim background */
         }
 
-        .modal {
-            display: none;
-            /* Initially hide modal */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
+        /* Modal content */
+        .bg-gray-800 {
+            background-color: #2d3748;
+            /* Dark background for modal */
         }
 
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        .text-white {
+            color: #fff;
+            /* White text color */
+        }
+
+        /* Input styles */
+        input {
+            border: 1px solid #4a5568;
+            /* Darker border for input */
+            background-color: #1a202c;
+            /* Dark background for input */
+            color: #fff;
+            /* White text for input */
+        }
+
+        input::placeholder {
+            color: #a0aec0;
+            /* Light gray placeholder text */
+        }
+
+        /* Responsive modal styles */
+        @media (max-width: 768px) {
+            #myModal > div {
+                width: 100%;
+                /* Full width on mobile */
+                height: 100%;
+                /* Full height on mobile */
+                border-radius: 0;
+                /* Remove border radius on mobile */
+            }
         }
     </style>
 </x-app-layout>

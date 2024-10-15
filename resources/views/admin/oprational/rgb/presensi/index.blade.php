@@ -50,22 +50,32 @@
                         <th class="p-3 text-center">Area</th>
                         @for ($i = 1; $i <= 31; $i++)
                             <th class="p-3 text-center">{{ $i }}</th>
-                        @endfor
-                        <th class="p-3 text-center M">M</th>
-                        <th class="p-3 text-center TK">TK</th>
-                        <th class="p-3 text-center B">B</th>
+                            @endfor
+                            <th class="p-3 text-center M">M</th>
+                            <th class="p-3 text-center TK">TK</th>
+                            <th class="p-3 text-center B">B</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($data as $item)
-                        <tr>
-                            <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item['name'] }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item['nik'] }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item['area'] }}</td>
-                            @for ($i = 1; $i <= 31; $i++)
-                                <td class="p-3 text-center uppercase {{ $item['status'][$i] ?? 'B' }}">
-                                    {{ $item['status'][$i] ?? 'B' }}</td>
+                    <tr>
+                        <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item['name'] }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item['nik'] }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item['area'] }}</td>
+                        @for ($i = 1; $i <= 31; $i++)
+                            <td class="p-3 text-center uppercase ">
+
+                            @if($item['timestamps'][$i])
+                            @if($item['timestamps'][$i]['created_at'] === $item['timestamps'][$i]['updated_at'])
+                            <p class="text-green-500">{{ $item['timestamps'][$i]['created_at'] }}</p>
+                            @else
+                            <p class="text-green-500">{{ $item['timestamps'][$i]['created_at'] }}</p>
+                            <p class="text-blue-500">{{ $item['timestamps'][$i]['updated_at'] }}</p>
+                            @endif
+                            @else
+                            <div class="{{ $item['status'][$i] ?? 'B' }}">{{ $item['status'][$i] ?? 'B' }}</div>
+                            @endif
                             @endfor
                             <td class="p-3 text-center uppercase">
                                 {{ $item['counts']['M'] }}
@@ -77,7 +87,7 @@
                                 {{ $item['counts']['B'] }}
                             </td>
 
-                        </tr>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>

@@ -46,6 +46,8 @@ class User extends Authenticatable
         'izin_ortu',
         'paklaring',
         'sim',
+        'bpjs_naker',
+        'bpjs_nakes',
         'created_at',
         'updated_at'
     ];

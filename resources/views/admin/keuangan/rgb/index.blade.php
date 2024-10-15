@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="flex flex-wrap gap-4 justify-center p-6 z-10">
+    <div class="flex flex-wrap gap-4 justify-center p-6">
         <!-- Card for Area -->
         <a href="{{ route('Area.index') }}"
             class="block bg-gray-800 shadow-md rounded-lg p-2 sm:p-4 w-20 h-20 sm:w-60 sm:h-40 lg:w-60 lg:h-40 flex flex-col items-center text-center hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105">

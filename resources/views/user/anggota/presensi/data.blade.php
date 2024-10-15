@@ -6,12 +6,6 @@
     </x-slot>
 
     <div class="p-6">
-        <!-- Button to Open Form -->
-        <button type="button"
-            class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-            onclick="openModal()">
-            Tambah
-        </button>
         <a href="{{ route('anggota.index') }}"
             class="ml-2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Kembali</a>
 
@@ -45,78 +39,33 @@
                 <tbody>
                     <!-- Sample Data -->
                     @foreach ($data as $item)
-                        <tr>
-                            <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->name }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->nik }}</td>
-                            <td class="p-3 text-center uppercase"><img src="{{ asset($item->image) }}"
-                                    class="w-40 h-30 flex m-auto" alt="Captured Image">
-                            </td>
-                            <td class="p-3 flex justify-center text-center uppercase">
-                                <iframe src="{{ $item->location }}&output=embed" width="300" height="100"
-                                    style="border:0;" allowfullscreen loading="lazy"></iframe>
-                            </td>
-                            <td class="p-3 text-center uppercase">{{ $item->ket1 }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->sesi }}</td>
+                    <tr>
+                        <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->name }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->nik }}</td>
+                        <td class="p-3 text-center uppercase"><img src="{{ asset($item->image) }}"
+                                class="w-40 h-30 flex m-auto" alt="Captured Image">
+                        </td>
+                        <td class="p-3 flex justify-center text-center uppercase">
+                            <iframe src="{{ $item->location }}&output=embed" width="300" height="100"
+                                style="border:0;" allowfullscreen loading="lazy"></iframe>
+                        </td>
+                        <td class="p-3 text-center uppercase">{{ $item->ket1 }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->sesi }}</td>
 
-                            <td class="p-3 text-center">
-                                @if (isset($item->ket2) && $item->ket2 !== '')
-                                    <p class="text-center text-green-600">Sudah Pulang</p>
-                                @else
-                                    <a href="{{ route('presensi.pulang', $item->id) }}"
-                                        class="bg-blue-500 p-2 rounded hover:bg-blue-600">Presensi Pulang</a>
-                                @endif
+                        <td class="p-3 text-center">
+                            @if (isset($item->ket2) && $item->ket2 !== '')
+                            <p class="text-center text-green-600">Sudah Pulang</p>
+                            @else
+                            <a href="{{ route('presensi.pulang', $item->id) }}"
+                                class="bg-blue-500 p-2 rounded hover:bg-blue-600">Presensi Pulang</a>
+                            @endif
 
-                            </td>
-                        </tr>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
-        </div>
-    </div>
-    <div id="customModal"
-        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity ease-out duration-300 opacity-0 pointer-events-none">
-        <div class="bg-gray-800 rounded-lg shadow-lg max-w-lg w-full transform transition-all duration-500 scale-95 opacity-0"
-            id="modalContent">
-            <!-- Modal header -->
-            <div class="flex justify-between items-center py-3 px-4 border-b">
-                <h3 class="font-bold text-white">
-                    Tambah UMR
-                </h3>
-                <button type="button"
-                    class="inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
-                    onclick="closeModal()">
-                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M18 6 6 18"></path>
-                        <path d="m6 6 12 12"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Modal content -->
-            <div class="p-4">
-                <form action="{{ route('umr.store') }}" method="POST">
-                    @csrf
-                    <div class="mb-4">
-                        <label for="lokasi" class="block text-white">lokasi</label>
-                        <input type="text" name="lokasi" id="lokasi"
-                            class="w-full px-3 py-2 border rounded-md text-black" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="umr" class="block text-white">UMR</label>
-                        <input type="number" name="umr" id="umr"
-                            class="w-full px-3 py-2 border rounded-md text-black" required>
-                    </div>
-                    <!-- Submit Button -->
-                    <div class="flex justify-end">
-                        <button type="button" onclick="closeModal()"
-                            class="px-4 py-2 bg-gray-500 text-white rounded-md mr-2">Batal</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Simpan</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
     <div class="h-20"></div>

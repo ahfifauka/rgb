@@ -26,12 +26,12 @@
             <input type="hidden" id="capturedImageInput" name="captured_image">
 
             <!-- Input to store formatted location as Google Maps link -->
-            <input type="hidden" id="locationInput" name="location">
-            <input type="hidden" name="name" value="{{ Auth::user()->name }}">
-            <input type="hidden" name="nik" value="{{ Auth::user()->nik }}">
-            <input type="hidden" name="area" value="{{ Auth::user()->area }}">
-            <input type="hidden" name="bagian" value="rumah">
-            <input type="hidden" name="sesi" id="sesi" value="{{ $jadwal ? $jadwal->{now()->day} : '' }}">
+            <input type="hidden" style="color: black;" id="locationInput" name="location">
+            <input type="hidden" style="color: black;" name="name" value="{{ Auth::user()->name }}">
+            <input type="hidden" style="color: black;" name="nik" value="{{ Auth::user()->nik }}">
+            <input type="hidden" style="color: black;" name="area" value="{{ Auth::user()->area }}">
+            <input type="hidden" style="color: black;" name="bagian" value="rumah">
+            <input type="hidden" style="color: black;" name="sesi" id="sesi" value="{{ $jadwal ? $jadwal->{now()->day} : '' }}">
             <div class="mt-2">
                 <label for="ket1">Keterangan :</label>
                 <input type="text" class="w-full rounded text-black" name="ket1" id="ket1" readonly>

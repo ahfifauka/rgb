@@ -13,13 +13,14 @@
     <div class="p-6">
         <div class="mt-8">
             <h3 class="text-lg font-semibold">
-                {{ request()->routeIs('DataRgb.create') ? __('Tambah Akun') : __('Edit Akun') }}</h3>
+                {{ request()->routeIs('DataRgb.create') ? __('Tambah Akun') : __('Edit Akun') }}
+            </h3>
             <form method="POST"
                 action="{{ request()->routeIs('DataRgb.create') ? route('DataRgb.store') : route('DataRgb.update', $account->id) }}"
                 class="mt-4">
                 @csrf
                 @if (request()->routeIs('DataRgb.edit'))
-                    @method('PUT')
+                @method('PUT')
                 @endif
 
                 <div class="mb-4">
@@ -87,9 +88,10 @@
                     <select name="area" id="area" class="w-full rounded-md bg-gray-700 text-white">
                         <option value="" disabled {{ old('area') ? '' : 'selected' }}>Pilih Area</option>
                         @foreach ($data as $item)
-                            <option value="{{ $item->area }}"
-                                {{ old('area', $account->area ?? '') == $item->area ? 'selected' : '' }}>
-                                {{ $item->area }}</option>
+                        <option value="{{ $item->area }}"
+                            {{ old('area', $account->area ?? '') == $item->area ? 'selected' : '' }}>
+                            {{ $item->area }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -143,12 +145,12 @@
                 <div class="">
                     <label class="block text-gray-300">Dokumen:</label>
                     @foreach (['ktp', 'skck', 'lamaran', 'foto', 'surat_sehat', 'kk', 'izin_ortu', 'paklaring', 'sim'] as $document)
-                        <div class="flex items-center mb-2">
-                            <input type="checkbox" id="{{ $document }}" name="{{ $document }}"
-                                value="ya" {{ old($document, $account->$document ?? '') ? 'checked' : '' }}
-                                class="mr-2" onchange="toggleSubOptions('{{ $document }}')">
-                            <label for="{{ $document }}" class="text-gray-300">{{ ucfirst($document) }}</label>
-                        </div>
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" id="{{ $document }}" name="{{ $document }}"
+                            value="ya" {{ old($document, $account->$document ?? '') ? 'checked' : '' }}
+                            class="mr-2" onchange="toggleSubOptions('{{ $document }}')">
+                        <label for="{{ $document }}" class="text-gray-300">{{ ucfirst($document) }}</label>
+                    </div>
                     @endforeach
 
                     <!-- Sub-checkboxes for SIM -->
@@ -200,6 +202,52 @@
                             <input type="radio" id="sarjana" name="ijazah_level" value="sarjana" class="mr-2"
                                 {{ old('ijazah_level', $account->ijazah_level ?? '') == 'sarjana' ? 'checked' : '' }}>
                             <label for="sarjana" class="text-gray-300">Sarjana</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="">
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" id="bpjs_naker" name="bpjs_naker" value="ya"
+                            {{ old('bpjs_naker', $account->bpjs_naker ?? '') ? 'checked' : '' }} class="mr-2"
+                            onchange="toggleSubOptions('bpjs_naker')">
+                        <label for="bpjs_naker" class="text-gray-300">Bpjs Naker</label>
+                    </div>
+
+                    <!-- Sub-checkboxes for Ijazah -->
+                    <div id="bpjs_naker-options" class="ml-6 flex gap-2 hidden">
+                        <div class="flex items-center mb-2">
+                            <input type="radio" id="ya" name="bpjs_naker" value="ya" class="mr-2"
+                                {{ old('bpjs_naker', $account->bpjs_naker ?? '') == 'ya' ? 'checked' : '' }}>
+                            <label for="ya" class="text-gray-300">Ya</label>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <input type="radio" id="tidak" name="bpjs_naker" value="tidak" class="mr-2"
+                                {{ old('bpjs_naker', $account->bpjs_naker ?? '') == 'tidak' ? 'checked' : '' }}>
+                            <label for="tidak" class="text-gray-300">Tidak</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="">
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" id="bpjs_nakes" name="bpjs_nakes" value="ya"
+                            {{ old('bpjs_nakes', $account->bpjs_nakes ?? '') ? 'checked' : '' }} class="mr-2"
+                            onchange="toggleSubOptions('bpjs_nakes')">
+                        <label for="bpjs_nakes" class="text-gray-300">Bpjs Naker</label>
+                    </div>
+
+                    <!-- Sub-checkboxes for Ijazah -->
+                    <div id="bpjs_nakes-options" class="ml-6 flex gap-2 hidden">
+                        <div class="flex items-center mb-2">
+                            <input type="radio" id="ya" name="bpjs_nakes" value="ya" class="mr-2"
+                                {{ old('bpjs_nakes', $account->bpjs_nakes ?? '') == 'ya' ? 'checked' : '' }}>
+                            <label for="ya" class="text-gray-300">Ya</label>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <input type="radio" id="tidak" name="bpjs_nakes" value="tidak" class="mr-2"
+                                {{ old('bpjs_nakes', $account->bpjs_nakes ?? '') == 'tidak' ? 'checked' : '' }}>
+                            <label for="tidak" class="text-gray-300">Tidak</label>
                         </div>
                     </div>
                 </div>
@@ -258,13 +306,13 @@
                     <label class="block text-gray-300">Agama:</label>
                     <div class="flex flex-wrap md:flex-nowrap gap-2">
                         @foreach (['Islam', 'Kristen', 'Katolik', 'Hindu', 'Budha', 'Konghucu'] as $religion)
-                            <div class="flex items-center mb-2 md:mb-0">
-                                <input type="radio" id="religion_{{ $loop->index }}" name="agama"
-                                    value="{{ $religion }}"
-                                    {{ old('religion', $account->religion ?? '') == $religion ? 'checked' : '' }}>
-                                <label for="religion_{{ $loop->index }}"
-                                    class="text-gray-300">{{ $religion }}</label>
-                            </div>
+                        <div class="flex items-center mb-2 md:mb-0">
+                            <input type="radio" id="religion_{{ $loop->index }}" name="agama"
+                                value="{{ $religion }}"
+                                {{ old('religion', $account->religion ?? '') == $religion ? 'checked' : '' }}>
+                            <label for="religion_{{ $loop->index }}"
+                                class="text-gray-300">{{ $religion }}</label>
+                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -339,8 +387,7 @@
 
     <script>
         // Fetch last NIK from the server and auto-generate the next one
-        fetch('{{ route('last-id') }}')
-            .then(response => response.json())
+        fetch('{{ route('last-id') }}').then(response => response.json())
             .then(data => {
                 var lastId = data.lastId || 'RGB-86.10.00.0000';
 
@@ -386,6 +433,16 @@
             // Handle SIM
             if (docName === 'sim') {
                 const simOptions = document.getElementById('sim-options');
+                simOptions.classList.toggle('hidden');
+            }
+
+            if (docName === 'bpjs_naker') {
+                const simOptions = document.getElementById('bpjs_naker-options');
+                simOptions.classList.toggle('hidden');
+            }
+
+            if (docName === 'bpjs_nakes') {
+                const simOptions = document.getElementById('bpjs_nakes-options');
                 simOptions.classList.toggle('hidden');
             }
         }

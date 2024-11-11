@@ -5,7 +5,7 @@
             <div class="flex justify-start items-center gap-2">
                 <img src="{{ asset('images/logo/logorgb.png') }}" alt="Logo" class="h-12">
                 <b>
-                    <p class="text-lg text-gray-200">PT. Rajawali <br> Buana 86ss</p>
+                    <p class="text-lg text-gray-200">PT. Rajawali <br> Buana 86</p>
                 </b>
             </div>
         </a>

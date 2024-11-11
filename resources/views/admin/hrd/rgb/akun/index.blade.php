@@ -75,13 +75,13 @@
                         <td class="p-3 text-center">
                             <div class="flex gap-2 justify-center items-center">
                                 <a href="{{ route('AkunRgb.edit', $account->id) }}"
-                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Surat
-                                    Tugas</a>
-                                <a href="{{ route('AkunRgb.edit', $account->id) }}"
+                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Surat Tugas</a>
+                                <a href="{{ route('peringatan') }}"
                                     class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Surat Peringatan</a>
+                                <a href="{{ route('teguran') }}"
+                                    class="bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-600">Surat teguran</a>
                                 <a href="{{ route('AkunRgb.edit', $account->id) }}"
-                                    class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Id
-                                    Card</a>
+                                    class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Id Card</a>
                             </div>
                         </td>
                     </tr>

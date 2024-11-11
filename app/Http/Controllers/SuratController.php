@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Surat;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use TCPDF;
-
+use App\Models\SuratP;
 
 class SuratController extends Controller
 {
@@ -149,4 +150,29 @@ class SuratController extends Controller
         // Output PDF ke browser
         return $pdf->output('Surat_Tugas_Sementara_' . $data->no_surat . '.pdf', 'I');
     }
+
+    public function peringatan()
+    {
+        $users = User::all();
+        return view('admin.hrd.rgb.akun.peringatan', compact('users'));
+    }
+    public function peringatanp(Request $request)
+    {
+        // Validasi input
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'nik' => 'required|string',
+            'jenis' => 'required|integer',
+            'keterangan' => 'nullable|string', // Keterangan tidak wajib diisi
+        ]);
+
+        // Menyimpan data ke dalam database menggunakan request()->all()
+        // Sesuaikan dengan nama kolom pada tabel Surat Anda
+        $surat = SuratP::create($validatedData);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('AkunRgb.index')->with('success', 'Surat berhasil dibuat.');
+    }
+
+    public function peringatanc() {}
 }

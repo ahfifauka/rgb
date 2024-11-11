@@ -108,6 +108,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/surat/store', [SuratController::class, 'store'])->name('surat.store');
     Route::get('/surat/cetak/real/{nik}', [SuratController::class, 'real'])->name('suratR.cetak');
     Route::get('/surat/cetak/sementara/{nik}', [SuratController::class, 'sementara'])->name('suratS.cetak');
+    //hrd-akun-surat peringatan
+    Route::get('/surat/peringatan', [SuratController::class, 'peringatan'])->name('peringatan');
+    Route::post('/surat/peringatan/post', [SuratController::class, 'peringatanp'])->name('peringatan.post');
+    Route::get('/surat/peringatan/cetak/{nik}', [SuratController::class, 'peringatanc'])->name('peringatan.cetak');
+    //hrd-akun-surat teguran
+    Route::get('/surat/teguran', [SuratController::class, 'teguran'])->name('teguran');
+    Route::post('/surat/teguran/post', [SuratController::class, 'teguranp'])->name('teguran.post');
+    Route::get('/surat/teguran/cetak/{nik}', [SuratController::class, 'teguranc'])->name('teguran.cetak');
+
 
     //hrd-data-rgb
     Route::resource('DataRgb', DataRgbController::class);

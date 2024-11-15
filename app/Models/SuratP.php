@@ -12,6 +12,7 @@ class SuratP extends Model
         'name',
         'nik',
         'jenis',
+        'status',
         'keterangan',
     ];
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('nik');
             $table->string('jenis');
+            $table->string('status');
             $table->string('keterangan');
             $table->timestamps();
         });

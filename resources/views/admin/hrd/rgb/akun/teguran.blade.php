@@ -8,14 +8,18 @@
     <div class="p-6">
         <div class="mt-8">
             <h3 class="text-lg font-semibold">
-                {{ request()->routeIs('DataRgb.create') ? __('Tambah Akun') : __('Pembuatan Surat Tugas') }}
+                {{ request()->routeIs('DataRgb.create') ? __('Tambah Akun') : __('Pembuatan Surat Teguran') }}
             </h3>
             <form method="POST" action="{{ route('teguran.post') }}" class="mt-4">
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-gray-300">Nama:</label>
-                    <input type="text" id="name" name="name" value="{{ old('name', $account->name ?? '') }}"
-                        class="w-full px-3 py-2 bg-gray-700 text-white rounded-md" required readonly>
+                    <select id="name" name="name" class="w-full px-3 py-2 bg-gray-700 text-white rounded-md">
+                        <option disabled selected>-- Pilih Nama --</option>
+                        @foreach($users as $user)
+                        <option value="{{ $user->name }}" data-nik="{{ $user->nik }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="mb-4">
                     <label for="nik" class="block text-gray-300">Nik:</label>
@@ -23,16 +27,17 @@
                         class="w-full px-3 py-2 bg-gray-700 text-white rounded-md" required readonly>
                 </div>
                 <div class="mb-4">
-                    <label for="level" class="block text-gray-300">Jenis Teguran</label>
-                    <select id="area" name="area" class="w-full px-3 py-2 bg-gray-700 text-white rounded-md">
-                        <option disabled selected>-- Pilih Teguran --</option>
+                    <label for="jenis" class="block text-gray-300">Teguran ke-</label>
+                    <select id="jenis" name="jenis" class="w-full px-3 py-2 bg-gray-700 text-white rounded-md">
+                        <option disabled selected>-- Pilih Teguran ke.. --</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
+                        <option value="3">3</option>
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label for="keterangan" class="block text-gray-300">Keterangan</label>
-                    <textarea name="keterangan" id="" rows="4" cols="6"></textarea>
+                    <label for="area" class="block text-gray-300">Keterangan:</label>
+                    <textarea name="keterangan" class="w-full h-32 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
                 <div class="flex justify-end">

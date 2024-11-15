@@ -4,6 +4,7 @@ namespace App\Http\Controllers\rgb;
 
 use App\Http\Controllers\Controller;
 use App\Models\Surat;
+use App\Models\SuratP;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -18,9 +19,13 @@ class AkunRgbController extends Controller
         $suratStatus = Surat::whereIn('nik', $data->pluck('nik'))
             ->get()
             ->groupBy('nik');
+        $suratStatus2 = SuratP::whereIn('nik', $data->pluck('nik'))
+            ->get()
+            ->groupBy('nik');
         return view('admin.hrd.rgb.akun.index', [
             'data' => $data,
             'suratStatus' => $suratStatus,
+            'suratStatus2' => $suratStatus2,
         ]);
     }
 

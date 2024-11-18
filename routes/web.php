@@ -31,7 +31,7 @@ use App\Http\Controllers\rgb\PenggajianRgbController;
 use App\Http\Controllers\rgb\PresensiRgbController;
 use App\Http\Controllers\rgb\TimeScheduleRgbController;
 use App\Http\Controllers\SuratController;
-
+use App\Models\Presensi;
 use App\Models\Surat;
 use App\Models\User;
 //rgb
@@ -87,6 +87,7 @@ Route::middleware('auth')->group(function () {
     Route::get('oprational/rbm', [OprationalController::class, 'rbm'])->name('oprational.rbm');
     //oprational-presensi
     Route::resource('presensi', PresensiRgbController::class);
+    Route::get('/detail/presensi', [PresensiRgbController::class, 'detailA'])->name('detail.admin');
     //oprational-patroli
     Route::resource('patroli', PatroliRgbController::class);
     Route::get('show/patroli/{nik}', [PatroliRgbController::class, 'detail'])->name('show.patroli');

@@ -19,13 +19,18 @@
         </h2>
     </x-slot>
     <div class="p-6">
-        <div class="flex gap-2">
-            <a href="{{ route('oprational.rgb') }}" class="bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                style="padding: 10px 10px 10px 10px"><i class="fas fa-file"></i> cetak</a>
-            <a href="{{ route('oprational.rgb') }}" class="bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                style="padding: 10px 10px 10px 10px"> <i class="fas fa-eye"></i> detail</a>
-            <a href="{{ route('oprational.rgb') }}" class="bg-red-500 text-white rounded-md hover:bg-red-600"
-                style="padding: 10px 10px 10px 10px">Kembali</a>
+        <div class="w-full flex justify-between">
+            <div>
+                <a href="{{ route('oprational.rgb') }}" class="bg-red-500 text-white rounded-md hover:bg-red-600"
+                    style="padding: 10px 10px 10px 10px">Kembali</a>
+            </div>
+            <div>
+                <button type="button"
+                    class="py-2 px-4 inline-flex items-center whitespace-nowrap gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                    x-data x-on:click="$dispatch('open-modal', 'add-presensi-modal')">
+                    Tools
+                </button>
+            </div>
         </div>
         <!-- Search and Page Length -->
         <div class="mt-4 mb-4 flex justify-between items-center">
@@ -93,4 +98,28 @@
             </table>
         </div>
     </div>
+    <x-modal name="add-presensi-modal" focusable>
+        <div class="container mx-auto p-4 bg-black rounded-lg shadow">
+            <h2 class="text-lg font-bold text-white mb-4">Pilih tools</h2>
+            <div class="space-y-3">
+                <!-- Tombol 1 -->
+                <a href="{{ route('oprational.rgb') }}"
+                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
+                    Cetak
+                </a>
+                <!-- Tombol 2 -->
+                <a href="{{ route('detail.admin') }}"
+                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
+                    Detail
+                </a>
+                <!-- Tombol 3 -->
+            </div>
+            <!-- Tombol Batal -->
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    Batal
+                </x-secondary-button>
+            </div>
+        </div>
+    </x-modal>
 </x-app-layout>

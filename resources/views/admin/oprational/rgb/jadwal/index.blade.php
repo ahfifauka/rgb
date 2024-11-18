@@ -29,29 +29,30 @@
                         <th class="p-3 text-center">Area</th>
                         @for ($i = 1; $i < 31; $i++)
                             <th class="p-3 text-center">{{ $i }}</th>
-                        @endfor
-                        <th class="p-3 text-center">Actions</th>
+                            @endfor
+                            <th class="p-3 text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Sample Data -->
                     @foreach ($data as $item)
-                        <tr>
-                            <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->name }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->nik }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->area }}</td>
-                            @for ($i = 1; $i < 31; $i++)
-                                <td class="p-3 text-center uppercase">{{ $item->$i }}</td>
+                    <tr>
+                        <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->name }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->nik }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->area }}</td>
+                        @for ($i = 1; $i < 31; $i++)
+                            <td class="p-3 text-center uppercase">{{ $item->$i }}</td>
                             @endfor
                             <td class="p-3 text-center">
                                 <a href="{{ route('jadwal.edit', $item->nik) }}"
                                     class="text-blue-500 hover:underline">Detail</a>
                             </td>
-                        </tr>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+    <div class="h-40"></div>
 </x-app-layout>

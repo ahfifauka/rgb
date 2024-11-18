@@ -64,6 +64,11 @@ class PresensiRgbController extends Controller
         ]);
     }
 
+    public function detailA()
+    {
+        $data = Presensi::all();
+        return view('admin.oprational.rgb.presensi.detail', compact('data'));
+    }
 
 
     /**

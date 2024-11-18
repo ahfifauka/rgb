@@ -48,7 +48,7 @@
 </div> -->
 
 <!-- Navbar Bawah (Fixed) -->
-<nav class="fixed bottom-0 left-0 right-0 bg-gray-800 shadow-lg">
+<nav class="fixed bottom-0 left-0 right-0 bg-gray-800 shadow-lg ">
     <div class="container mx-auto p-4 flex justify-between">
 
         <!-- Home Icon -->

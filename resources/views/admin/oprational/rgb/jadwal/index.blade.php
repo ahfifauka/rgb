@@ -54,6 +54,54 @@
         </div>
     </div>
     <div class="h-40"></div>
+    <nav class="footer">
+        <div class="container mx-auto p-4 flex justify-between">
+
+            <!-- Home Icon -->
+            <a href="{{ route('dashboard') }}" class="text-center flex justify-center items-center gap-2 flex-col nav-item"
+                id="home">
+                <i class="fas fa-home text-2xl text-gray-300"></i>
+                <span class="text-sm text-gray-300">Home</span>
+            </a>
+
+            <!-- Keuangan Icon -->
+            @if( Auth::user()->jabatan == 'Administrasi' || Auth::user()->jabatan == 'direktur')
+            <a href="{{ route('keuangan.index') }}"
+                class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="keuangan">
+                <i class="fas fa-wallet text-2xl text-gray-300"></i>
+                <span class="text-sm text-gray-300">Keuangan</span>
+            </a>
+            @endif
+
+            <!-- Operational Icon -->
+            @if( Auth::user()->jabatan == 'Oprational' || Auth::user()->jabatan == 'direktur')
+            <a href="{{ route('oprational.index') }}"
+                class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="operational">
+                <i class="fas fa-cogs text-2xl text-gray-300"></i>
+                <span class="text-sm text-gray-300">Operational</span>
+            </a>
+            @endif
+
+            <!-- HRD Icon -->
+            @if( Auth::user()->jabatan == 'Hrd' || Auth::user()->jabatan == 'direktur')
+            <a href="{{ route('hrd.index') }}" class="text-center flex justify-center items-center gap-2 flex-col nav-item"
+                id="hrd">
+                <i class="fas fa-users text-2xl text-gray-300"></i>
+                <span class="text-sm text-gray-300">HRD</span>
+            </a>
+            @endif
+
+            <!-- Profile Icon -->
+            @if( Auth::user()->jabatan == 'Marketing' || Auth::user()->jabatan == 'direktur')
+            <a href="{{ route('marketing.index') }}"
+                class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="marketing">
+                <i class="fas fa-building text-2xl text-gray-300"></i>
+                <span class="text-sm text-gray-300">Marketing</span>
+            </a>
+            @endif
+
+        </div>
+    </nav>
     <script>
         document.getElementById('search-input').addEventListener('keyup', function() {
             const searchTerm = this.value.toLowerCase();
@@ -72,12 +120,21 @@
                 if (found) {
                     row.style.display = ''; // Show row
                 } else {
-                    row.style.display = 'none'; // Hide row
+                    row.style.display = 'none'; // Hide row 
                 }
             });
         });
     </script>
     <style>
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #202938;
+            z-index: 109;
+        }
+
         /* Mengatur agar tidak ada jarak diantara kolom */
         #data-table {
             border-collapse: collapse;
@@ -195,7 +252,7 @@
             #data-table th:nth-child(2) {
                 position: sticky;
                 left: 0;
-                z-index: 104;
+                z-index: 13;
             }
 
             #data-table td:nth-child(3),
@@ -203,7 +260,7 @@
                 position: sticky;
                 left: 38px;
                 background-color: #2d3748;
-                z-index: 103;
+                z-index: 12;
             }
 
             #data-table td:nth-child(4),
@@ -211,7 +268,7 @@
                 position: sticky;
                 left: 80px;
                 background-color: #2d3748;
-                z-index: 102;
+                z-index: 13;
             }
         }
     </style>

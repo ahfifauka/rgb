@@ -45,8 +45,8 @@
                             <td class="p-3 text-center uppercase">{{ $item->$i }}</td>
                             @endfor
                             <td class="p-3 text-center">
-                                <a href="{{ route('jadwal.edit', $item->nik) }}"
-                                    class="text-blue-500 hover:underline">Detail</a>
+                                <a href="{{ route('jadwal.edit', $item->id) }}"
+                                    class="text-blue-500 hover:underline">Edit</a>
                             </td>
                     </tr>
                     @endforeach
@@ -55,4 +55,27 @@
         </div>
     </div>
     <div class="h-40"></div>
+    <script>
+        document.getElementById('search-input').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#data-table tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let found = false;
+
+                cells.forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    row.style.display = ''; // Show row
+                } else {
+                    row.style.display = 'none'; // Hide row
+                }
+            });
+        });
+    </script>
 </x-app-layout>

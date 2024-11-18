@@ -132,4 +132,27 @@
             }, 300); // Time for the modal content animation
         }
     </script>
+    <script>
+        document.getElementById('search-input').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#data-table tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let found = false;
+
+                cells.forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    row.style.display = ''; // Show row
+                } else {
+                    row.style.display = 'none'; // Hide row
+                }
+            });
+        });
+    </script>   
 </x-app-layout>

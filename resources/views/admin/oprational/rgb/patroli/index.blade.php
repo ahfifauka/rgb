@@ -31,19 +31,43 @@
                 <tbody>
                     <!-- Sample Data -->
                     @foreach ($data as $item)
-                        <tr>
-                            <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->name }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->nik }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->area }}</td>
-                            <td class="p-3 text-center">
-                                <a href="{{ route('show.patroli', $item->nik) }}"
-                                    class="text-blue-500 hover:underline">Detail</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->name }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->nik }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->area }}</td>
+                        <td class="p-3 text-center">
+                            <a href="{{ route('show.patroli', $item->nik) }}"
+                                class="text-blue-500 hover:underline">Detail</a>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+    <div class="h-40"></div>
+    <script>
+        document.getElementById('search-input').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#data-table tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let found = false;
+
+                cells.forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    row.style.display = ''; // Show row
+                } else {
+                    row.style.display = 'none'; // Hide row
+                }
+            });
+        });
+    </script>
 </x-app-layout>

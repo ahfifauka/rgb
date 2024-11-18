@@ -28,22 +28,44 @@
                 </thead>
                 <tbody>
                     @foreach ($patrolData as $item)
-                        <tr>
-                            <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                            <td class="p-3 text-center">{{ $item->tanggal }}</td>
-                            <td class="p-3 text-center">{{ $item->keterangan }}</td>
-                            <td class="p-3 text-center">{{ $item->lokasi }}</td>
-                            <td class="p-3 text-center">{{ $item->situasi }}</td>
-                            <td class="p-3 text-center">{{ $item->foto_anggota }}</td>
-                            <td class="p-3 text-center">{{ $item->foto_sekitar }}</td>
-                            <td class="p-3 text-center">{{ $item->keterangan }}</td>
-                            <!-- Tambahkan data lain sesuai kebutuhan -->
-                        </tr>
+                    <tr>
+                        <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
+                        <td class="p-3 text-center">{{ $item->tanggal }}</td>
+                        <td class="p-3 text-center">{{ $item->keterangan }}</td>
+                        <td class="p-3 text-center">{{ $item->lokasi }}</td>
+                        <td class="p-3 text-center">{{ $item->situasi }}</td>
+                        <td class="p-3 text-center"><img src="{{asset('storage/'.$item->foto_anggota)}}" alt="" class="w-1/2 flex m-auto"></td>
+                        <td class="p-3 text-center"><img src="{{asset('storage/'.$item->foto_sekitar)}}" alt="" class="w-1/2 flex m-auto"></td>
+                        <td class="p-3 text-center">{{ $item->keterangan }}</td>
+                        <!-- Tambahkan data lain sesuai kebutuhan -->
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-
-
     </div>
+    <script>
+        document.getElementById('search-input').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#data-table tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let found = false;
+
+                cells.forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    row.style.display = ''; // Show row
+                } else {
+                    row.style.display = 'none'; // Hide row
+                }
+            });
+        });
+    </script>
+    <div class="h-40"></div>
 </x-app-layout>

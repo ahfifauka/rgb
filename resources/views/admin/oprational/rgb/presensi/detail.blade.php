@@ -67,6 +67,7 @@
         </div>
 
     </div>
+    <div class="h-40"></div>
     <script>
         function openLightbox(event, imageUrl) {
             event.preventDefault(); // Prevent default link behavior

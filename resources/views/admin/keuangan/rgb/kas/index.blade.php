@@ -86,28 +86,28 @@
                 <tbody>
                     <!-- Sample Data -->
                     @foreach ($data as $item)
-                        <tr>
-                            <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->tanggal }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->jenis }}</td>
-                            <td class="p-3 text-center uppercase">{{ number_format($item->jumlah, 2) }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->keterangan }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->tipe }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->nama_pembayar }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->metode_pembayaran }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->referensi }}</td>
-                            <td class="p-3 text-center uppercase">{{ number_format($item->saldo, 2) }}</td>
-                            <td class="p-3 text-center">
-                                <a href="{{ route('kas.edit', $item->id) }}"
-                                    class="text-blue-500 hover:underline">Edit</a>
-                                <form action="{{ route('kas.destroy', $item->id) }}" method="POST"
-                                    class="inline-block ml-2">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->tanggal }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->jenis }}</td>
+                        <td class="p-3 text-center uppercase">{{ number_format($item->jumlah, 2) }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->keterangan }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->tipe }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->nama_pembayar }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->metode_pembayaran }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->referensi }}</td>
+                        <td class="p-3 text-center uppercase">{{ number_format($item->saldo, 2) }}</td>
+                        <td class="p-3 text-center">
+                            <a href="{{ route('kas.edit', $item->id) }}"
+                                class="text-blue-500 hover:underline">Edit</a>
+                            <form action="{{ route('kas.destroy', $item->id) }}" method="POST"
+                                class="inline-block ml-2">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -191,6 +191,29 @@
         </div>
     </div>
     <div class="h-26"></div>
+    <script>
+        document.getElementById('search-input').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#data-table tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let found = false;
+
+                cells.forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    row.style.display = ''; // Show row
+                } else {
+                    row.style.display = 'none'; // Hide row
+                }
+            });
+        });
+    </script>
     <script>
         function openModal() {
             const modal = document.getElementById('customModal');

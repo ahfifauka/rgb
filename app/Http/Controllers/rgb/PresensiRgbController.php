@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use TCPDF;
 use Carbon\Carbon; // Make sure to import Carbon
 
 class PresensiRgbController extends Controller
@@ -185,5 +186,99 @@ class PresensiRgbController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function generateLaporanPresensi()
+    {
+        // Ambil data anggota dan presensi
+        $anggota = User::where('jabatan', 'anggota')->get(['name', 'nik', 'area']);
+        $presensiData = Presensi::whereIn('nik', $anggota->pluck('nik'))->get();
+
+        $data = $anggota->map(function ($anggota) use ($presensiData) {
+            $anggotaPresensi = $presensiData->where('nik', $anggota->nik);
+            $status = [];
+            $timestamps = [];
+            $today = now();
+
+            for ($i = 1; $i <= 31; $i++) {
+                $date = now()->startOfMonth()->addDays($i - 1)->format('Y-m-d');
+                $presensi = $anggotaPresensi->firstWhere(function ($p) use ($date) {
+                    return $p->created_at->format('Y-m-d') === $date;
+                });
+
+                if ($presensi) {
+                    $status[$i] = 'M';
+                    $timestamps[$i] = [
+                        'created_at' => $presensi->created_at->format('H:i'),
+                        'updated_at' => $presensi->updated_at->format('H:i'),
+                    ];
+                } else {
+                    $status[$i] = $today->day < $i ? 'B' : 'TK';
+                    $timestamps[$i] = null;
+                }
+            }
+
+            return [
+                'name' => $anggota->name,
+                'nik' => $anggota->nik,
+                'area' => $anggota->area,
+                'status' => $status,
+                'timestamps' => $timestamps,
+                'counts' => [
+                    'M' => array_count_values($status)['M'] ?? 0,
+                    'TK' => array_count_values($status)['TK'] ?? 0,
+                    'B' => array_count_values($status)['B'] ?? 0,
+                ],
+            ];
+        });
+
+        // Menggunakan TCPDF untuk generate PDF
+        $pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);  // 'L' untuk landscape
+        $pdf->SetAutoPageBreak(TRUE, 15);
+        $pdf->AddPage();
+
+        // Set font untuk judul
+        $pdf->SetFont('helvetica', 'B', 16);
+        $pdf->Cell(0, 10, 'Laporan Presensi', 0, 1, 'C');
+
+        // Set font untuk tabel
+        $pdf->SetFont('helvetica', '', 7);
+
+        // Buat header tabel
+        $pdf->SetFillColor(200, 220, 255); // Set warna latar belakang header
+        $pdf->Cell(8, 7, 'No', 1, 0, 'C', 1);
+        $pdf->Cell(20, 7, 'Nama', 1, 0, 'C', 1);
+        $pdf->Cell(25, 7, 'Nik', 1, 0, 'C', 1);
+        $pdf->Cell(15, 7, 'Area', 1, 0, 'C', 1);
+
+        // Kolom untuk tanggal 1-31
+        for ($i = 1; $i <= 31; $i++) {
+            $pdf->Cell(5.8, 7, $i, 1, 0, 'C', 1);
+        }
+
+        $pdf->Cell(10, 7, 'M', 1, 0, 'C', 1);
+        $pdf->Cell(10, 7, 'TK', 1, 0, 'C', 1);
+        $pdf->Cell(10, 7, 'B', 1, 1, 'C', 1);
+
+        // Isi data presensi ke dalam tabel
+        foreach ($data as $index => $item) {
+            $pdf->Cell(8, 7, $index + 1, 1);
+            $pdf->Cell(20, 7, $item['name'], 1);
+            $pdf->Cell(25, 7, $item['nik'], 1);
+            $pdf->Cell(15, 7, $item['area'], 1);
+
+            // Tampilkan status per hari (1-31)
+            foreach ($item['status'] as $status) {
+                $pdf->Cell(5.8, 7, $status, 1, 0, 'C');
+            }
+
+            // Tampilkan count M, TK, B
+            $pdf->Cell(10, 7, $item['counts']['M'], 1, 0, 'C');
+            $pdf->Cell(10, 7, $item['counts']['TK'], 1, 0, 'C');
+            $pdf->Cell(10, 7, $item['counts']['B'], 1, 1, 'C');
+        }
+
+        // Output PDF
+        $pdf->Output('Laporan_Presensi.pdf', 'I');
     }
 }

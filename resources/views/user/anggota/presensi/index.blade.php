@@ -55,6 +55,7 @@
             <p>Coordinates:</p>
             <p>Latitude: <span id="latitudeInput">N/A</span></p>
             <p>Longitude: <span id="longitudeInput">N/A</span></p>
+            <p>Location Name: <span id="locationName">Fetching...</span></p>
             <p>
                 <a id="googleMapsLink" href="#" target="_blank" class="text-blue-500 underline"
                     style="display:none;">View on Google Maps</a>
@@ -137,7 +138,7 @@
         // Automatically get current location when the page loads
         window.onload = function() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
+                navigator.geolocation.getCurrentPosition(async position => {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
 
@@ -148,6 +149,24 @@
                     longitudeInput.textContent = lng.toFixed(6); // Display longitude
                     googleMapsLink.href = locationLink; // Set link for viewing on Google Maps
                     googleMapsLink.style.display = "block"; // Show the link
+
+                    // Call Nominatim API to get the location name
+                    try {
+                        const nominatimURL = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
+                        const response = await fetch(nominatimURL);
+                        const data = await response.json();
+
+                        if (data && data.display_name) {
+                            const locationName = data.display_name;
+                            document.getElementById('locationName').textContent = locationName; // Display location name
+                        } else {
+                            console.error("Nominatim API error: ", data);
+                            alert("Unable to fetch location name.");
+                        }
+                    } catch (error) {
+                        console.error("Error fetching location name: ", error);
+                        alert("Error retrieving location name.");
+                    }
                 }, error => {
                     console.error("Geolocation error: ", error);
                     alert("Unable to retrieve your location. Please check your location settings.");

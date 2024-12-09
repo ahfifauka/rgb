@@ -7,6 +7,8 @@
     <div class="p-6">
         <a href="{{ route('oprational.rgb') }}"
             class="bg-red-500 text-white rounded-md hover:bg-red-600 px-4 py-2 mb-4">Kembali</a>
+        <a href="{{ route('patroli.create') }}"
+            class="bg-blue-500 text-white rounded-md hover:bg-blue-600 px-4 py-2 mb-4">Barcode</a>
         <div class="mt-4 mb-4 flex justify-between items-center">
             <input type="text" id="search-input" placeholder="Search..."
                 class="px-3 py-2 bg-gray-700 text-white rounded-md">

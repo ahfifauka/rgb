@@ -30,12 +30,12 @@
                     @foreach ($patrolData as $item)
                     <tr>
                         <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                        <td class="p-3 text-center">{{ $item->tanggal }}</td>
-                        <td class="p-3 text-center">{{ $item->keterangan }}</td>
+                        <td class="p-3 text-center">{{ $item->name }}</td>
+                        <td class="p-3 text-center">{{ $item->nik }}</td>
                         <td class="p-3 text-center">{{ $item->lokasi }}</td>
                         <td class="p-3 text-center">{{ $item->situasi }}</td>
-                        <td class="p-3 text-center"><img src="{{asset('storage/'.$item->foto_anggota)}}" alt="" class="w-1/2 flex m-auto"></td>
-                        <td class="p-3 text-center"><img src="{{asset('storage/'.$item->foto_sekitar)}}" alt="" class="w-1/2 flex m-auto"></td>
+                        <td class="p-3 text-center"><img src="{{asset('storage/'.$item->foto_anggota)}}" alt="" class="w-32 flex m-auto"></td>
+                        <td class="p-3 text-center"><img src="{{asset('storage/'.$item->foto_sekitar)}}" alt="" class="w-32 flex m-auto"></td>
                         <td class="p-3 text-center">{{ $item->keterangan }}</td>
                         <!-- Tambahkan data lain sesuai kebutuhan -->
                     </tr>

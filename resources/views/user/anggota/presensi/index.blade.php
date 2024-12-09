@@ -48,20 +48,17 @@
                 class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full mt-4">
                 Submit
             </button>
+            <div id="coordinatesDisplay w-full p-4" class="mt-4">
+                <p>Coordinates:</p>
+                <p>Latitude: <span id="latitudeInput">N/A</span></p>
+                <p>Longitude: <span id="longitudeInput">N/A</span></p>
+                <p>Location Name: <span id="locationName">Fetching...</span></p>
+                <p>
+                    <a id="googleMapsLink" href="#" target="_blank" class="text-blue-500 underline"
+                        style="display:none;">View on Google Maps</a>
+                </p>
+            </div>
         </form>
-
-        <!-- Coordinates Display (for user reference) -->
-        <div id="coordinatesDisplay" class="mt-4">
-            <p>Coordinates:</p>
-            <p>Latitude: <span id="latitudeInput">N/A</span></p>
-            <p>Longitude: <span id="longitudeInput">N/A</span></p>
-            <p>Location Name: <span id="locationName">Fetching...</span></p>
-            <p>
-                <a id="googleMapsLink" href="#" target="_blank" class="text-blue-500 underline"
-                    style="display:none;">View on Google Maps</a>
-            </p>
-            <div>naha teu masuk</div>
-        </div>
     </div>
     <div class="h-20"></div>
 

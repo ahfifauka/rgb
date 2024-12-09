@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
     //oprational-patroli
     Route::resource('patroli', PatroliRgbController::class);
     Route::get('show/patroli/{nik}', [PatroliRgbController::class, 'detail'])->name('show.patroli');
+
     //oprational-jadwal
     Route::resource('jadwal', JadwalRgbController::class);
     Route::get('/users-jadwal-by-area', [JadwalRgbController::class, 'getUsersByArea']);

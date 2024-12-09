@@ -47,48 +47,121 @@
                         @php
                         $suratRealExists = $suratStatus->get($account->nik)?->contains('status', 'Real');
                         $suratSemenExists = $suratStatus->get($account->nik)?->contains('status', 'Sementara');
+                        $suratP = $suratStatus2->get($account->nik)?->contains('status', 'peringatan');
+                        $suratT = $suratStatus2->get($account->nik)?->contains('status', 'teguran');
                         @endphp
                         <td class="p-3 text-center">
                             <div class="flex gap-2 justify-center items-center">
+                                <button type="button"
+                                    class="py-2 px-4 inline-flex items-center whitespace-nowrap gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                                    x-data x-on:click="$dispatch('open-modal', 'add-area-modal2-{{ $account->id }}')">
+                                    Donwload Surat
+                                </button>
+                            </div>
+                        </td>
+                        <td class="p-3 text-center">
+                            <div class="flex gap-2 justify-center items-center">
+                                <button type="button"
+                                    class="py-2 px-4 inline-flex items-center whitespace-nowrap gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                                    x-data x-on:click="$dispatch('open-modal', 'add-area-modal-{{ $account->id }}')">
+                                    Buat Surat
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <x-modal name="add-area-modal-{{ $account->id }}" focusable>
+                        <div class="container mx-auto p-4 bg-black rounded-lg shadow">
+                            <h2 class="text-lg font-bold text-white mb-4">Pilih form Surat</h2>
+                            <div class="space-y-3">
+                                <!-- Tombol 1 -->
+                                <a href="{{ route('AkunRgb.edit', $account->id) }}"
+                                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
+                                    Surat Tugas
+                                </a>
+                                <!-- Tombol 2 -->
+                                <a href="{{ route('peringatan') }}"
+                                    class="block w-full bg-red-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-600">
+                                    Surat Peringatan
+                                </a>
+                                <!-- Tombol 3 -->
+                                <a href="{{ route('teguran') }}"
+                                    class="block w-full bg-red-700 text-white px-4 py-2 rounded-md text-center hover:bg-red-800">
+                                    Surat Teguran
+                                </a>
+                                <!-- Tombol 4 -->
+                                <a href="{{ route('AkunRgb.edit', $account->id) }}"
+                                    class="block w-full bg-green-500 text-white px-4 py-2 rounded-md text-center hover:bg-green-600">
+                                    ID Card
+                                </a>
+                            </div>
+                            <!-- Tombol Batal -->
+                            <div class="mt-6 flex justify-end">
+                                <x-secondary-button x-on:click="$dispatch('close')">
+                                    Batal
+                                </x-secondary-button>
+                            </div>
+                        </div>
+                    </x-modal>
+                    <x-modal name="add-area-modal2-{{ $account->id }}" focusable>
+                        <div class="container mx-auto p-4 bg-black rounded-lg shadow">
+                            <h2 class="text-lg font-bold text-white mb-4">Pilih Dokumen</h2>
+                            <div class="space-y-3">
+                                <!-- Tombol 1 -->
                                 @if ($suratRealExists)
                                 <a href="{{ route('suratR.cetak', $account->nik) }}"
-                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
                                     <i class="fa-solid fa-download"></i> Real
                                 </a>
                                 @else
-                                <span class="bg-red-500 text-white text-sm rounded-md inline-flex items-center"
+                                <span class="block w-full bg-red-500 text-white px-4 py-2 rounded-md text-center"
                                     style="padding: 0 5px 0 5px">
                                     Real Belum dibuat</span>
                                 @endif
                                 @if ($suratSemenExists)
                                 <a href="{{ route('suratS.cetak', $account->nik) }}"
-                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"><i
+                                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600"><i
                                         class="fa-solid fa-download"></i> Sementara</a>
                                 @else
-                                <span class="bg-red-500 text-white text-sm rounded-md inline-flex items-center"
+                                <span class="block w-full bg-red-500 text-white px-4 py-2 rounded-md text-center"
                                     style="padding: 0 5px 0 5px">
                                     Sementara Belum dibuat</span>
                                 @endif
-
+                                @if ($suratP)
+                                <a href="{{ route('peringatan.cetak', $account->nik) }}"
+                                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600"><i
+                                        class="fa-solid fa-download"></i> SP</a>
+                                @else
+                                <span class="block w-full bg-red-500 text-white px-4 py-2 rounded-md text-center"
+                                    style="padding: 0 5px 0 5px">
+                                    SP Belum dibuat</span>
+                                @endif
+                                @if ($suratT)
+                                <a href="{{ route('teguran.cetak', $account->nik) }}"
+                                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600"><i
+                                        class="fa-solid fa-download"></i> Teguran</a>
+                                @else
+                                <span class="block w-full bg-red-500 text-white px-4 py-2 rounded-md text-center"
+                                    style="padding: 0 5px 0 5px">
+                                    Teguran Belum dibuat</span>
+                                @endif
+                                <span class="block w-full bg-red-500 text-white px-4 py-2 rounded-md text-center"
+                                    style="padding: 0 5px 0 5px">
+                                    ID card Belum dibuat</span>
                             </div>
-                        </td>
-                        <td class="p-3 text-center">
-                            <div class="flex gap-2 justify-center items-center">
-                                <a href="{{ route('AkunRgb.edit', $account->id) }}"
-                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Surat
-                                    Tugas</a>
-                                <a href="{{ route('AkunRgb.edit', $account->id) }}"
-                                    class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Surat Peringatan</a>
-                                <a href="{{ route('AkunRgb.edit', $account->id) }}"
-                                    class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Id
-                                    Card</a>
+                            <!-- Tombol Batal -->
+                            <div class="mt-6 flex justify-end">
+                                <x-secondary-button x-on:click="$dispatch('close')">
+                                    Batal
+                                </x-secondary-button>
                             </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </x-modal>
                     @endforeach
                 </tbody>
             </table>
         </div>
+        <div class="h-40"></div>
+
 
         <!-- Create/Edit Form -->
 
@@ -112,6 +185,29 @@
 
                 $('#search-input').on('keyup', function() {
                     table.search($(this).val()).draw();
+                });
+            });
+        </script>
+        <script>
+            document.getElementById('search-input').addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#data-table tbody tr');
+
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    let found = false;
+
+                    cells.forEach(cell => {
+                        if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                            found = true;
+                        }
+                    });
+
+                    if (found) {
+                        row.style.display = ''; // Show row
+                    } else {
+                        row.style.display = 'none'; // Hide row
+                    }
                 });
             });
         </script>

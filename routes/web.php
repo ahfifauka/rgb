@@ -31,7 +31,7 @@ use App\Http\Controllers\rgb\PenggajianRgbController;
 use App\Http\Controllers\rgb\PresensiRgbController;
 use App\Http\Controllers\rgb\TimeScheduleRgbController;
 use App\Http\Controllers\SuratController;
-
+use App\Models\Presensi;
 use App\Models\Surat;
 use App\Models\User;
 //rgb
@@ -87,9 +87,12 @@ Route::middleware('auth')->group(function () {
     Route::get('oprational/rbm', [OprationalController::class, 'rbm'])->name('oprational.rbm');
     //oprational-presensi
     Route::resource('presensi', PresensiRgbController::class);
+    Route::get('/detail/presensi', [PresensiRgbController::class, 'detailA'])->name('detail.admin');
+    Route::get('/laporan-presensi', [PresensiRgbController::class, 'generateLaporanPresensi'])->name('laporan.presensi');
     //oprational-patroli
     Route::resource('patroli', PatroliRgbController::class);
     Route::get('show/patroli/{nik}', [PatroliRgbController::class, 'detail'])->name('show.patroli');
+
     //oprational-jadwal
     Route::resource('jadwal', JadwalRgbController::class);
     Route::get('/users-jadwal-by-area', [JadwalRgbController::class, 'getUsersByArea']);
@@ -108,6 +111,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/surat/store', [SuratController::class, 'store'])->name('surat.store');
     Route::get('/surat/cetak/real/{nik}', [SuratController::class, 'real'])->name('suratR.cetak');
     Route::get('/surat/cetak/sementara/{nik}', [SuratController::class, 'sementara'])->name('suratS.cetak');
+    //hrd-akun-surat peringatan
+    Route::get('/surat/peringatan', [SuratController::class, 'peringatan'])->name('peringatan');
+    Route::post('/surat/peringatan/post', [SuratController::class, 'peringatanp'])->name('peringatan.post');
+    Route::get('/surat/peringatan/cetak/{nik}', [SuratController::class, 'peringatanc'])->name('peringatan.cetak');
+    //hrd-akun-surat teguran
+    Route::get('/surat/teguran', [SuratController::class, 'teguran'])->name('teguran');
+    Route::post('/surat/teguran/post', [SuratController::class, 'teguranp'])->name('teguran.post');
+    Route::get('/surat/teguran/cetak/{nik}', [SuratController::class, 'teguranc'])->name('teguran.cetak');
+
 
     //hrd-data-rgb
     Route::resource('DataRgb', DataRgbController::class);

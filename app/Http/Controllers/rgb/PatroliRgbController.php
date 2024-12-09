@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\rgb;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\Patroli;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Writer\PngWriter;
+use Symfony\Component\HttpFoundation\Response;
 
 class PatroliRgbController extends Controller
 {
@@ -24,7 +28,8 @@ class PatroliRgbController extends Controller
      */
     public function create()
     {
-        //
+        $data = Area::all();
+        return view('admin.oprational.rgb.patroli.create', compact('data'));
     }
 
     /**
@@ -32,8 +37,35 @@ class PatroliRgbController extends Controller
      */
     public function store(Request $request)
     {
-        // Handle photo uploads
-        
+        // Validasi input dari form
+        $validated = $request->validate([
+            'area' => 'required|string|max:255',
+            'lokasi' => 'required|string|max:255',
+        ]);
+
+        // Ambil data dari form
+        $area = $validated['area'];   // Area yang dipilih user
+        $lokasi = $validated['lokasi'];   // Lokasi yang dimasukkan user
+
+        // Gabungkan data untuk QR Code (misalnya "RGB.area.lokasi")
+        $qrData = "RGB.$area.$lokasi";
+
+        // Generate QR Code menggunakan Endroid
+        $qrCode = Builder::create()
+            ->writer(new PngWriter())  // Menggunakan PngWriter untuk menghasilkan gambar PNG
+            ->data($qrData)           // Data yang digenerate untuk QR Code
+            ->size(300)               // Ukuran QR code
+            ->margin(10)              // Margin QR Code
+            ->build();
+
+        // Set nama file untuk QR Code
+        $filename = 'qrcode-' . $area . '.png';
+
+        // Menghasilkan dan mengirimkan file QR Code sebagai respons untuk diunduh
+        return response($qrCode->getString(), 200, [
+            'Content-Type' => 'image/png',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
     }
 
     /**

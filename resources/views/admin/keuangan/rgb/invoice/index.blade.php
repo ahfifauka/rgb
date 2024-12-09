@@ -5,7 +5,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-200 leading-tight">
-            {{ __('Keuangan RGB') }}
+            {{ __('Invoice RGB') }}
         </h2>
     </x-slot>
     <div class="p-6">
@@ -49,31 +49,31 @@
                 <tbody>
                     <!-- Sample Data -->
                     @foreach ($data as $account)
-                        <tr>
-                            <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->no_invoice }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->no_faktur }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->customer }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->banyak }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->harga }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->rekening }}</td>
-                            <td class="p-3 text-center uppercase">{{ $account->created_at }}</td>
-                            </td>
-                            <td class="p-3 text-center">
-                                <div class="flex gap-2">
-                                    <a href="" class="text-green-500 hover:underline"><i
-                                            class="fa-solid fa-download"></i> Invoice</a>
-                                    <a href="{{ route('invoice.edit', $account->id) }}"
-                                        class="text-blue-500 hover:underline">Edit</a>
-                                    <form action="{{ route('invoice.destroy', $account->id) }}" method="POST"
-                                        class="inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:underline">Delete</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->no_invoice }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->no_faktur }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->customer }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->banyak }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->harga }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->rekening }}</td>
+                        <td class="p-3 text-center uppercase">{{ $account->created_at }}</td>
+                        </td>
+                        <td class="p-3 text-center">
+                            <div class="flex gap-2">
+                                <a href="" class="text-green-500 hover:underline"><i
+                                        class="fa-solid fa-download"></i> Invoice</a>
+                                <a href="{{ route('invoice.edit', $account->id) }}"
+                                    class="text-blue-500 hover:underline">Edit</a>
+                                <form action="{{ route('invoice.destroy', $account->id) }}" method="POST"
+                                    class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -121,7 +121,7 @@
                             required>
                             <option value="" disabled selected>-- Pilih Customer --</option>
                             @foreach ($lokasi as $item)
-                                <option value="{{ $item->area }}">{{ $item->area }}</option>
+                            <option value="{{ $item->area }}">{{ $item->area }}</option>
                             @endforeach
                         </select>
                     </div>

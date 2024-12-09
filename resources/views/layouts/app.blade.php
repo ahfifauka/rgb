@@ -44,6 +44,7 @@
         <main>
             {{ $slot }}
         </main>
+
     </div>
     <script>
         @if(session('success'))

@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Surat;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use TCPDF;
-
+use App\Models\SuratP;
 
 class SuratController extends Controller
 {
@@ -148,5 +149,139 @@ class SuratController extends Controller
 
         // Output PDF ke browser
         return $pdf->output('Surat_Tugas_Sementara_' . $data->no_surat . '.pdf', 'I');
+    }
+
+    public function peringatan()
+    {
+        $users = User::all();
+        return view('admin.hrd.rgb.akun.peringatan', compact('users'));
+    }
+    public function peringatanp(Request $request)
+    {
+        // Validasi input
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'nik' => 'required|string',
+            'jenis' => 'required|integer',
+            'keterangan' => 'nullable|string', // Keterangan tidak wajib diisi
+        ]);
+
+        // Menyimpan data ke dalam database menggunakan request()->all()
+        // Sesuaikan dengan nama kolom pada tabel Surat Anda
+        $validatedData['status'] = 'peringatan';
+        $surat = SuratP::create($validatedData);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('AkunRgb.index')->with('success', 'Surat berhasil dibuat.');
+    }
+
+    public function peringatanc($nik)
+    {
+        $data = SuratP::where('nik', $nik)
+            ->where('status', 'peringatan')
+            ->firstOrFail();
+
+        // Konfigurasi TCPDF
+        $pdf = new TCPDF();
+
+        // Set metadata
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('HRD RGB');
+        $pdf->SetTitle('Surat Peringatan');
+        $pdf->SetSubject('Surat Peringatan untuk ' . $data->name);
+
+        // Set header dan footer
+        $pdf->setHeaderData('', 0, 'Surat Peringatan', 'HRD RGB');
+        $pdf->setFooterData();
+
+        // Set margins
+        $pdf->SetMargins(15, 30, 15);
+        $pdf->SetHeaderMargin(10);
+        $pdf->SetFooterMargin(10);
+
+        // Set auto page breaks
+        $pdf->SetAutoPageBreak(true);
+
+        // Set font
+        $pdf->SetFont('helvetica', '', 12);
+
+        // Add a page
+        $pdf->AddPage();
+
+        // Load view untuk surat dan ambil outputnya sebagai string
+        $view = view('admin.hrd.rgb.akun.cetak.peringatan', compact('data'))->render();
+
+        // Write HTML content to PDF
+        $pdf->writeHTML($view, true, false, true, false, '');
+
+        // Output PDF ke browser
+        return $pdf->output('Surat_Peringatan_' . $data->nik . '.pdf', 'I');
+    }
+
+    public function teguran()
+    {
+        $users = User::all();
+        return view('admin.hrd.rgb.akun.teguran', compact('users'));
+    }
+    public function teguranp(Request $request)
+    {
+        // Validasi input
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'nik' => 'required|string',
+            'jenis' => 'required|integer',
+            'keterangan' => 'nullable|string', // Keterangan tidak wajib diisi
+        ]);
+
+        // Menyimpan data ke dalam database menggunakan request()->all()
+        // Sesuaikan dengan nama kolom pada tabel Surat Anda
+        $validatedData['status'] = 'teguran';
+        $surat = SuratP::create($validatedData);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('AkunRgb.index')->with('success', 'Surat berhasil dibuat.');
+    }
+
+    public function teguranc($nik)
+    {
+        $data = SuratP::where('nik', $nik)
+            ->where('status', 'teguran')
+            ->firstOrFail();
+
+        // Konfigurasi TCPDF
+        $pdf = new TCPDF();
+
+        // Set metadata
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('HRD RGB');
+        $pdf->SetTitle('Surat teguran');
+        $pdf->SetSubject('Surat teguran untuk ' . $data->name);
+
+        // Set header dan footer
+        $pdf->setHeaderData('', 0, 'Surat teguran', 'HRD RGB');
+        $pdf->setFooterData();
+
+        // Set margins
+        $pdf->SetMargins(15, 30, 15);
+        $pdf->SetHeaderMargin(10);
+        $pdf->SetFooterMargin(10);
+
+        // Set auto page breaks
+        $pdf->SetAutoPageBreak(true);
+
+        // Set font
+        $pdf->SetFont('helvetica', '', 12);
+
+        // Add a page
+        $pdf->AddPage();
+
+        // Load view untuk surat dan ambil outputnya sebagai string
+        $view = view('admin.hrd.rgb.akun.cetak.teguran', compact('data'))->render();
+
+        // Write HTML content to PDF
+        $pdf->writeHTML($view, true, false, true, false, '');
+
+        // Output PDF ke browser
+        return $pdf->output('Surat_Teguran_' . $data->nik . '.pdf', 'I');
     }
 }

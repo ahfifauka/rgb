@@ -40,22 +40,22 @@
                 <tbody>
                     <!-- Sample Data -->
                     @foreach ($data as $item)
-                        <tr>
-                            <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->area }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->file }}</td>
-                            <td class="p-3 text-center uppercase">{{ $item->created_at }}</td>
-                            <td class="p-3 text-center">
-                                <a href="{{ route('Area.edit', $item->id) }}"
-                                    class="text-blue-500 hover:underline">Edit</a>
-                                <form action="{{ route('Area.destroy', $item->id) }}" method="POST"
-                                    class="inline-block ml-2">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->area }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->file }}</td>
+                        <td class="p-3 text-center uppercase">{{ $item->created_at }}</td>
+                        <td class="p-3 text-center">
+                            <a href="{{ route('Area.edit', $item->id) }}"
+                                class="text-blue-500 hover:underline">Edit</a>
+                            <form action="{{ route('Area.destroy', $item->id) }}" method="POST"
+                                class="inline-block ml-2">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -137,5 +137,28 @@
                 }, 300); // Time for the background to fade out
             }, 300); // Time for the modal content animation
         }
+    </script>
+    <script>
+        document.getElementById('search-input').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#data-table tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let found = false;
+
+                cells.forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    row.style.display = ''; // Show row
+                } else {
+                    row.style.display = 'none'; // Hide row
+                }
+            });
+        });
     </script>
 </x-app-layout>

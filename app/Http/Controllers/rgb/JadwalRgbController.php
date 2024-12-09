@@ -17,7 +17,10 @@ class JadwalRgbController extends Controller
      */
     public function index()
     {
-        $data = Jadwal::all();
+        $data = Jadwal::orderBy('area')  // Urutkan berdasarkan 'area'
+            ->orderBy('name')  // Urutkan berdasarkan 'name' jika 'area' sama
+            ->get();
+
         return view('admin.oprational.rgb.jadwal.index', compact('data'));
     }
 
@@ -71,7 +74,8 @@ class JadwalRgbController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Jadwal::findOrFail($id);
+        return view('admin.oprational.rgb.jadwal.edit', compact('data'));
     }
 
     /**
@@ -79,7 +83,16 @@ class JadwalRgbController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = Jadwal::findOrFail($id);
+
+        // Mengupdate jadwal untuk setiap hari
+        for ($day = 1; $day <= 31; $day++) {
+            $data->{$day} = $request->input('day_' . $day);
+        }
+
+        $data->save();
+
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil diperbarui');
     }
 
     /**
@@ -107,44 +120,42 @@ class JadwalRgbController extends Controller
             }
 
             // Simpan atau update jadwal di database
-            Jadwal::updateOrCreate(
-                ['nik' => $row[2]], // Cari berdasarkan NIK
-                [
-                    'name' => $row[1],
-                    'area' => $row[3],
-                    '1' => $row[4] ?? null,
-                    '2' => $row[5] ?? null,
-                    '3' => $row[6] ?? null,
-                    '4' => $row[7] ?? null,
-                    '5' => $row[8] ?? null,
-                    '6' => $row[9] ?? null,
-                    '7' => $row[10] ?? null,
-                    '8' => $row[11] ?? null,
-                    '9' => $row[12] ?? null,
-                    '10' => $row[13] ?? null,
-                    '11' => $row[14] ?? null,
-                    '12' => $row[15] ?? null,
-                    '13' => $row[16] ?? null,
-                    '14' => $row[17] ?? null,
-                    '15' => $row[18] ?? null,
-                    '16' => $row[19] ?? null,
-                    '17' => $row[20] ?? null,
-                    '18' => $row[21] ?? null,
-                    '19' => $row[22] ?? null,
-                    '20' => $row[23] ?? null,
-                    '21' => $row[24] ?? null,
-                    '22' => $row[25] ?? null,
-                    '23' => $row[26] ?? null,
-                    '24' => $row[27] ?? null,
-                    '25' => $row[28] ?? null,
-                    '26' => $row[29] ?? null,
-                    '27' => $row[30] ?? null,
-                    '28' => $row[31] ?? null,
-                    '29' => $row[32] ?? null,
-                    '30' => $row[33] ?? null,
-                    '31' => $row[34] ?? null,
-                ]
-            );
+            Jadwal::create([
+                'nik' => $row[2],
+                'name' => $row[1],
+                'area' => $row[3],
+                '1' => $row[4] ?? null,
+                '2' => $row[5] ?? null,
+                '3' => $row[6] ?? null,
+                '4' => $row[7] ?? null,
+                '5' => $row[8] ?? null,
+                '6' => $row[9] ?? null,
+                '7' => $row[10] ?? null,
+                '8' => $row[11] ?? null,
+                '9' => $row[12] ?? null,
+                '10' => $row[13] ?? null,
+                '11' => $row[14] ?? null,
+                '12' => $row[15] ?? null,
+                '13' => $row[16] ?? null,
+                '14' => $row[17] ?? null,
+                '15' => $row[18] ?? null,
+                '16' => $row[19] ?? null,
+                '17' => $row[20] ?? null,
+                '18' => $row[21] ?? null,
+                '19' => $row[22] ?? null,
+                '20' => $row[23] ?? null,
+                '21' => $row[24] ?? null,
+                '22' => $row[25] ?? null,
+                '23' => $row[26] ?? null,
+                '24' => $row[27] ?? null,
+                '25' => $row[28] ?? null,
+                '26' => $row[29] ?? null,
+                '27' => $row[30] ?? null,
+                '28' => $row[31] ?? null,
+                '29' => $row[32] ?? null,
+                '30' => $row[33] ?? null,
+                '31' => $row[34] ?? null,
+            ]);
         }
 
         return redirect()->back()->with('success', 'Template successfully uploaded and processed.');

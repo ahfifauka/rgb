@@ -5,7 +5,7 @@
             <div class="flex justify-start items-center gap-2">
                 <img src="{{ asset('images/logo/logorgb.png') }}" alt="Logo" class="h-12">
                 <b>
-                    <p class="text-lg text-gray-200">PT. Rajawali <br> Buana 86ss</p>
+                    <p class="text-lg text-gray-200">PT. Rajawali <br> Buana 86</p>
                 </b>
             </div>
         </a>
@@ -48,7 +48,7 @@
 </div> -->
 
 <!-- Navbar Bawah (Fixed) -->
-<nav class="fixed bottom-0 left-0 right-0 bg-gray-800 shadow-lg">
+<nav class="fixed bottom-0 left-0 bg-gray-800 shadow-lg w-full z-50">
     <div class="container mx-auto p-4 flex justify-between">
 
         <!-- Home Icon -->

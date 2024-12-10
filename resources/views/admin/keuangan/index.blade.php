@@ -42,6 +42,5 @@
             <p class="text-gray-500">atur keuangan tiap daerah</p>
         </a>
     </div>
-    </div>
     <div class="h-20"></div>
 </x-app-layout>

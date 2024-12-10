@@ -33,14 +33,7 @@
             <input type="hidden" style="color: black;" name="bagian" value="rumah">
             <input type="hidden" style="color: black;" name="sesi" id="sesi" value="{{ $jadwal ? $jadwal->{now()->day} : '' }}">
             <div class="mt-2">
-                <label for="ket1">Keterangan :</label>
-                <input type="text" class="w-full rounded text-black" name="ket1" id="ket1" readonly>
-            </div>
-
-            <!-- Checkbox for 'Terlambat' -->
-            <div class="mt-2">
-                <input type="checkbox" id="lateCheckbox" name="terlambat">
-                <label for="lateCheckbox">Terlambat</label>
+                <input type="hidden" class="w-full rounded text-black" name="ket1" id="ket1" readonly>
             </div>
 
             <!-- Submit button for form (will be shown/hidden based on time and lateness) -->
@@ -111,23 +104,21 @@
         function checkTimeAndLateStatus() {
             const currentDate = new Date();
             const currentHour = currentDate.getHours();
-            let isAllowedTime = false;
-            let keterangan = "Masuk Terlambat   "; // Default if outside allowed times
+            let keterangan = "Masuk Terlambat"; // Default
 
-            if ((currentHour >= 7 && currentHour < 8) || (currentHour >= 12 && currentHour < 13) || (currentHour >= 18 &&
-                    currentHour < 19)) {
-                isAllowedTime = true;
+            if ((currentHour >= 6 && currentHour < 8) ||
+                (currentHour >= 12 && currentHour < 13) ||
+                (currentHour >= 18 && currentHour < 20)) {
                 keterangan = "Masuk";
             }
 
-            if (lateCheckbox.checked && isAllowedTime) {
-                keterangan = "Masuk Telat";
-            }
+            // Selalu tampilkan tombol submit
+            submitButton.style.display = 'block';
 
-            // Show/Hide the submit button and set keterangan
-            submitButton.style.display = isAllowedTime || lateCheckbox.checked ? 'block' : 'none';
+            // Set keterangan
             ketInput.value = keterangan;
         }
+
 
         // Run check on page load and when late checkbox changes
         window.onload = checkTimeAndLateStatus;

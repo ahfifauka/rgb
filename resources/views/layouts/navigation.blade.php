@@ -59,7 +59,7 @@
         </a>
 
         <!-- Keuangan Icon -->
-        @if( Auth::user()->jabatan == 'Administrasi' || Auth::user()->jabatan == 'direktur')
+        @if( Auth::user()->jabatan == 'administrasi' || Auth::user()->jabatan == 'direktur')
         <a href="{{ route('keuangan.index') }}"
             class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="keuangan">
             <i class="fas fa-wallet text-2xl text-gray-300"></i>
@@ -68,7 +68,7 @@
         @endif
 
         <!-- Operational Icon -->
-        @if( Auth::user()->jabatan == 'Oprational' || Auth::user()->jabatan == 'direktur')
+        @if( Auth::user()->jabatan == 'oprational' || Auth::user()->jabatan == 'direktur')
         <a href="{{ route('oprational.index') }}"
             class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="operational">
             <i class="fas fa-cogs text-2xl text-gray-300"></i>
@@ -77,7 +77,7 @@
         @endif
 
         <!-- HRD Icon -->
-        @if( Auth::user()->jabatan == 'Hrd' || Auth::user()->jabatan == 'direktur')
+        @if( Auth::user()->jabatan == 'hrd' || Auth::user()->jabatan == 'direktur')
         <a href="{{ route('hrd.index') }}" class="text-center flex justify-center items-center gap-2 flex-col nav-item"
             id="hrd">
             <i class="fas fa-users text-2xl text-gray-300"></i>
@@ -86,7 +86,7 @@
         @endif
 
         <!-- Profile Icon -->
-        @if( Auth::user()->jabatan == 'Marketing' || Auth::user()->jabatan == 'direktur')
+        @if( Auth::user()->jabatan == 'marketing' || Auth::user()->jabatan == 'direktur')
         <a href="{{ route('marketing.index') }}"
             class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="marketing">
             <i class="fas fa-building text-2xl text-gray-300"></i>

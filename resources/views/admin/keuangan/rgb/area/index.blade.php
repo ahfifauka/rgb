@@ -5,14 +5,19 @@
         </h2>
     </x-slot>
     <div class="p-6">
-        <div class="flex gap-2">
+        <div class="flex justify-between">
             <!-- Open modal trigger -->
-            <button type="button"
-                class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                x-data x-on:click="$dispatch('open-modal', 'add-area-modal')">
-                Tambah
-            </button>
-            <a href="{{ route('keuangan.rgb') }}" class="p-2 bg-red-500 text-white rounded-md hover:bg-red-600">Kembali</a>
+            <div class="flex gap-2">
+                <button type="button"
+                    class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                    x-data x-on:click="$dispatch('open-modal', 'add-area-modal')">
+                    Tambah
+                </button>
+                <a href="{{ route('keuangan.rgb') }}" class="p-2 bg-red-500 text-white rounded-md hover:bg-red-600">Kembali</a>
+            </div>
+            <div class="flex">
+                <a href="{{route('cetak.area')}}" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded">Cetak</a>
+            </div>
         </div>
 
         <!-- Search and Page Length -->

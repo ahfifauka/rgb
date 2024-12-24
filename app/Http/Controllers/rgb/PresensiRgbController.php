@@ -195,7 +195,9 @@ class PresensiRgbController extends Controller
     public function generateLaporanPresensi(Request $request)
     {
         // Ambil data anggota dan presensi
-        $anggota = User::where('jabatan', 'anggota')->get(['name', 'nik', 'area']);
+        $anggota = User::where('jabatan', 'anggota')
+            ->where('area', $request->area)
+            ->get(['name', 'nik', 'area']);
         $presensiData = Presensi::whereIn('nik', $anggota->pluck('nik'))
             ->where('area', $request->area)
             ->get();

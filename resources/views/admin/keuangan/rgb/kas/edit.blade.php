@@ -17,8 +17,10 @@
             </div>
             <div class="mb-4">
                 <label for="jenis" class="block text-white">Jenis</label>
-                <input type="text" name="jenis" id="jenis" value="{{ $kas->jenis }}"
-                    class="w-full px-3 py-2 border rounded-md text-black" required>
+                <select name="jenis" id="jenis" class="w-full px-3 py-2 border rounded-md text-black" required>
+                    <option value="pemasukan" {{ $kas->jenis == 'pemasukan' ? 'selected' : '' }}>Pemasukan</option>
+                    <option value="pengeluaran" {{ $kas->jenis == 'pengeluaran' ? 'selected' : '' }}>Pengeluaran</option>
+                </select>
             </div>
             <div class="mb-4">
                 <label for="jumlah" class="block text-white">Jumlah</label>

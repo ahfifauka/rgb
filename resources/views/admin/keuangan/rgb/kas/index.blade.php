@@ -1,16 +1,3 @@
-<style>
-    #modal-content {
-        transform: scale(0);
-        /* Initial state - hidden */
-        transition: transform 0.3s ease-in-out;
-        /* Transition effect */
-    }
-
-    #modal.show #modal-content {
-        transform: scale(1);
-        /* Final state - visible */
-    }
-</style>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-200 leading-tight">
@@ -44,14 +31,16 @@
                 <p class="text-xl mt-2">Rp. {{ number_format($selisih, 2) }}</p>
             </div>
         </div>
-        <button type="button"
-            class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-            onclick="openModal()">
-            Tambah
-        </button>
+        <div class="flex gap-2">
+            <button type="button"
+                class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                x-data x-on:click="$dispatch('open-modal', 'add-area-modal')">
+                Tambah
+            </button>
 
-        <a href="{{ route('keuangan.rgb') }}" class="ml-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-            style="padding: 10px 10px 10px 10px">Kembali</a>
+            <a href="{{ route('keuangan.rgb') }}" class="bg-red-500 text-white rounded-md hover:bg-red-600"
+                style="padding: 10px 10px 10px 10px">Kembali</a>
+        </div>
 
         <!-- Search and Page Length -->
         <div class="mt-4 mb-4 flex justify-between items-center">
@@ -114,82 +103,73 @@
         </div>
     </div>
 
-    <div id="customModal"
-        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity ease-out duration-300 opacity-0 pointer-events-none">
-        <div class="bg-gray-800 rounded-lg shadow-lg max-w-lg w-full transform transition-all duration-500 scale-95 opacity-0"
-            id="modalContent">
-            <!-- Modal header -->
-            <div class="flex justify-between items-center py-3 px-4 border-b">
-                <h3 class="font-bold text-white">
-                    Tambah Kas
-                </h3>
-                <button type="button"
-                    class="inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
-                    onclick="closeModal()">
-                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M18 6 6 18"></path>
-                        <path d="m6 6 12 12"></path>
-                    </svg>
-                </button>
-            </div>
+    <x-modal name="add-area-modal" focusable>
+        <div class="px-4 py-4">
+            <form action="{{ route('kas.store') }}" method="POST">
+                @csrf
+                <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">
+                    Kas
+                </h2>
 
-            <!-- Modal content -->
-            <div class="p-4">
-                <form action="{{ route('kas.store') }}" method="POST">
-                    @csrf
+                <div class="mt-4">
+                    <label for="tanggal" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Tanggal</label>
+                    <input type="date" name="tanggal" id="tanggal"
+                        class="w-full mt-1 px-3 py-2 border rounded-md text-black" required>
+                </div>
+                <div class="mt-4">
+                    <label for="jenis" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Tipe</label>
+                    <select name="jenis" id="jenis" class="w-full mt-1 px-3 py-2 border rounded-md text-black"
+                        required>
+                        <option selected>-- Pilih Jenis --</option>
+                        <option value="pemasukan">Pemasukan</option>
+                        <option value="pengeluaran">Pengeluaran</option>
+                    </select>
+                </div>
+                <div class="mt-4">
+                    <label for="jumlah" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Jumlah</label>
+                    <input type="number" name="jumlah" id="jumlah"
+                        class="w-full mt-1 px-3 py-2 border rounded-md text-black" required>
+                </div>
+                <div class="mt-4">
+                    <label for="keterangan" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Keterangan</label>
+                    <textarea name="keterangan" id="keterangan" class="w-full mt-1 px-3 py-2 border rounded-md text-black"></textarea>
+                </div>
+                <div class="mt-4">
+                    <label for="tipe" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Tipe</label>
+                    <select name="tipe" id="tipe" class="w-full mt-1 px-3 py-2 border rounded-md text-black"
+                        required>
+                        <option selected>-- Pilih Tipe --</option>
+                        <option value="masuk">Masuk</option>
+                        <option value="keluar">Keluar</option>
+                    </select>
+                </div>
+                <div class="mt-4">
+                    <label for="nama_pembayar" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Nama Pembayar</label>
+                    <input type="text" name="nama_pembayar" id="nama_pembayar"
+                        class="w-full mt-1 px-3 py-2 border rounded-md text-black">
+                </div>
+                <div class="mt-4">
+                    <label for="metode_pembayaran" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Metode Pembayaran</label>
+                    <input type="text" name="metode_pembayaran" id="metode_pembayaran"
+                        class="w-full mt-1 px-3 py-2 border rounded-md text-black">
+                </div>
+                <div class="mt-4">
+                    <label for="referensi" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Referensi</label>
+                    <input type="text" name="referensi" id="referensi"
+                        class="w-full mt-1 px-3 py-2 border rounded-md text-black">
+                </div>
 
-                    <div class="mb-4">
-                        <label for="tanggal" class="block text-white">Tanggal</label>
-                        <input type="date" name="tanggal" id="tanggal"
-                            class="w-full px-3 py-2 border rounded-md text-black" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="jenis" class="block text-white">Jenis</label>
-                        <input type="text" name="jenis" id="jenis"
-                            class="w-full px-3 py-2 border rounded-md text-black" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="jumlah" class="block text-white">Jumlah</label>
-                        <input type="number" name="jumlah" id="jumlah"
-                            class="w-full px-3 py-2 border rounded-md text-black" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="keterangan" class="block text-white">Keterangan</label>
-                        <textarea name="keterangan" id="keterangan" class="w-full px-3 py-2 border rounded-md text-black"></textarea>
-                    </div>
-                    <div class="mb-4">
-                        <label for="tipe" class="block text-white">Tipe</label>
-                        <select name="tipe" id="tipe" class="w-full px-3 py-2 border rounded-md text-black"
-                            required>
-                            <option value="masuk">Masuk</option>
-                            <option value="keluar">Keluar</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="nama_pembayar" class="block text-white">Nama Pembayar</label>
-                        <input type="text" name="nama_pembayar" id="nama_pembayar"
-                            class="w-full px-3 py-2 border rounded-md text-black">
-                    </div>
-                    <div class="mb-4">
-                        <label for="metode_pembayaran" class="block text-white">Metode Pembayaran</label>
-                        <input type="text" name="metode_pembayaran" id="metode_pembayaran"
-                            class="w-full px-3 py-2 border rounded-md text-black">
-                    </div>
-                    <div class="mb-4">
-                        <label for="referensi" class="block text-white">Referensi</label>
-                        <input type="text" name="referensi" id="referensi"
-                            class="w-full px-3 py-2 border rounded-md text-black">
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Simpan</button>
-                    </div>
-                </form>
-            </div>
+                <div class="mt-6 flex justify-end">
+                    <x-secondary-button x-on:click="$dispatch('close')">
+                        Batal
+                    </x-secondary-button>
+                    <x-primary-button class="ml-3">
+                        Simpan
+                    </x-primary-button>
+                </div>
+            </form>
         </div>
-    </div>
+    </x-modal>
     <div class="h-26"></div>
     <script>
         document.getElementById('search-input').addEventListener('keyup', function() {
@@ -213,42 +193,5 @@
                 }
             });
         });
-    </script>
-    <script>
-        function openModal() {
-            const modal = document.getElementById('customModal');
-            const modalContent = document.getElementById('modalContent');
-
-            // Show the modal background
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0', 'pointer-events-none');
-                modal.classList.add('opacity-100');
-            }, 10); // Delay to trigger CSS transition
-
-            // Animate the modal content (scale up and fade in)
-            setTimeout(() => {
-                modalContent.classList.remove('scale-95', 'opacity-0');
-                modalContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('customModal');
-            const modalContent = document.getElementById('modalContent');
-
-            // Animate the modal content (scale down and fade out)
-            modalContent.classList.remove('scale-100', 'opacity-100');
-            modalContent.classList.add('scale-95', 'opacity-0');
-
-            // Hide the modal background after animation completes
-            setTimeout(() => {
-                modal.classList.add('opacity-0', 'pointer-events-none');
-                modal.classList.remove('opacity-100');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 300); // Time for the background to fade out
-            }, 300); // Time for the modal content animation
-        }
     </script>
 </x-app-layout>

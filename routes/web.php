@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
 
     //keuangan-area
     Route::resource('Area', AreaRgbController::class);
+    Route::get('cetak/area', [AreaRgbController::class, 'cetak'])->name('cetak.area');
 
     //keuangan-kas
     Route::resource('kas', KasRgbController::class);

@@ -7,6 +7,7 @@ use App\Models\Area;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use TCPDF;
 
 
 class InvoiceRgbController extends Controller
@@ -123,7 +124,9 @@ class InvoiceRgbController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Invoice::findOrFail($id);
+        $lokasi = Area::all();
+        return view('admin.keuangan.rgb.invoice.edit', compact('data', 'lokasi'));
     }
 
     /**
@@ -131,7 +134,42 @@ class InvoiceRgbController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validasi input
+        $request->validate([
+            'no_invoice' => 'required|string',
+            'no_faktur' => 'required|numeric',
+            'customer' => 'required|string',
+            'banyak' => 'required|numeric',
+            'harga' => 'required|numeric',
+            'rekening' => 'required|string',
+            'periode' => 'required|string',
+            'due_date' => 'required|date',
+            'penggantian' => 'required|numeric',
+        ]);
+
+        try {
+            // Cari data berdasarkan ID
+            $invoice = Invoice::findOrFail($id);
+
+            // Update data
+            $invoice->update([
+                'no_invoice' => $request->no_invoice,
+                'no_faktur' => $request->no_faktur,
+                'customer' => $request->customer,
+                'banyak' => $request->banyak,
+                'harga' => $request->harga,
+                'rekening' => $request->rekening,
+                'periode' => $request->periode,
+                'due_date' => $request->due_date,
+                'penggantian' => $request->penggantian,
+            ]);
+
+            // Redirect ke halaman tertentu dengan pesan sukses
+            return redirect()->route('invoice.index')->with('success', 'Invoice berhasil diperbarui.');
+        } catch (\Exception $e) {
+            // Jika terjadi kesalahan
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui invoice.');
+        }
     }
 
     /**
@@ -139,6 +177,101 @@ class InvoiceRgbController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Invoice::findOrFail($id);
+        $data->delete();
+        return redirect()->route('invoice.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function cetak()
+    {
+        // Ambil data dari model
+        $data = Invoice::all();
+
+        // Buat instance TCPDF
+        $pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Your Application');
+        $pdf->SetTitle('Laporan Invoice');
+        $pdf->SetSubject('Laporan Invoice');
+
+        // Set margin dan header
+        $pdf->SetMargins(10, 20, 10);
+        $pdf->SetHeaderMargin(10);
+        $pdf->SetFooterMargin(15);
+
+        // Header
+        $pdf->setPrintHeader(true);
+        $pdf->setPrintFooter(true);
+        $pdf->SetHeaderData('', 0, 'Laporan Invoice', 'Periode: ' . now()->format('Y'));
+
+        // Tambahkan halaman
+        $pdf->AddPage();
+        // Set font
+        $pdf->SetFont('helvetica', '', 7);
+        $pdf->Ln(10);
+
+        // Header Tabel
+        $tblHeader = <<<EOD
+<table cellspacing="0" cellpadding="5" border="1">
+    <thead>
+        <tr style="background-color: #f2f2f2; text-align: center;">
+            <th>No</th>
+            <th>No Invoice</th>
+            <th>No Faktur</th>
+            <th>Customer</th>
+            <th>Alamat</th>
+            <th>Banyak</th>
+            <th>Harga</th>
+            <th>Rekening</th>
+            <th>Periode</th>
+            <th>Due Date</th>
+            <th>Penggantian</th>
+            <th>PPH</th>
+            <th>PPN</th>
+        </tr>
+    </thead>
+    <tbody>
+EOD;
+
+        // Isi Tabel
+        $tblContent = '';
+        $no = 1;
+        foreach ($data as $row) {
+            $tblContent .= '<tr>';
+            $tblContent .= '<td style="text-align: center;">' . $no++ . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . $row->no_invoice . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . $row->no_faktur . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . $row->customer . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . $row->alamat . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . $row->banyak . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . number_format($row->harga, 2, ',', '.') . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . $row->rekening . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . $row->periode . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . $row->due_date . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . number_format($row->penggantian, 2, ',', '.') . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . $row->pph . '</td>';
+            $tblContent .= '<td style="text-align: center;">' . $row->ppn . '</td>';
+            $tblContent .= '</tr>';
+        }
+
+        // Penutup Tabel
+        $tblFooter = <<<EOD
+    </tbody>
+</table>
+EOD;
+
+        // Gabungkan tabel
+        $tbl = $tblHeader . $tblContent . $tblFooter;
+
+        // Tulis tabel ke PDF
+        $pdf->writeHTML($tbl, true, false, false, false, '');
+
+        // Footer
+        $pdf->SetY(-15);
+        $pdf->SetFont('helvetica', 'I', 8);
+        $pdf->Cell(0, 10, 'Halaman ' . $pdf->getAliasNumPage() . ' dari ' . $pdf->getAliasNbPages(), 0, 0, 'C');
+
+        // Output PDF
+        $pdf->Output('Laporan_Invoice.pdf', 'I');
     }
 }

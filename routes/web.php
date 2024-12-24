@@ -31,6 +31,7 @@ use App\Http\Controllers\rgb\PenggajianRgbController;
 use App\Http\Controllers\rgb\PresensiRgbController;
 use App\Http\Controllers\rgb\TimeScheduleRgbController;
 use App\Http\Controllers\SuratController;
+use App\Models\Invoice;
 use App\Models\Presensi;
 use App\Models\Surat;
 use App\Models\User;
@@ -70,6 +71,7 @@ Route::middleware('auth')->group(function () {
 
     //keuangan-kas
     Route::resource('kas', KasRgbController::class);
+    Route::get('cetak/kas', [KasRgbController::class, 'cetak'])->name('cetak.kas');
 
     //keuangan-penggajian
     Route::resource('penggajian', PenggajianRgbController::class);
@@ -81,6 +83,8 @@ Route::middleware('auth')->group(function () {
 
     //keuangan-Invoice
     Route::resource('invoice', InvoiceRgbController::class);
+    Route::get('cetak/invoice', [InvoiceRgbController::class, 'cetak'])->name('cetak.invoice');
+
 
     //oprational
     Route::get('oprational', [OprationalController::class, 'index'])->name('oprational.index');

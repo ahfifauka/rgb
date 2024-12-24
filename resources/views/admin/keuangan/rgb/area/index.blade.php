@@ -36,18 +36,18 @@
             <table id="data-table" class="min-w-full bg-gray-800 text-white rounded-md">
                 <thead>
                     <tr>
-                        <th class="p-3 text-center">No</th>
-                        <th class="p-3 text-center">Area</th>
-                        <th class="p-3 text-center">Gaji</th>
-                        <th class="p-3 text-center">Pajak</th>
-                        <th class="p-3 text-center">Alamat</th>
-                        <th class="p-3 text-center">Lokasi</th>
-                        <th class="p-3 text-center">Tunjangan Makan</th>
-                        <th class="p-3 text-center">Tunjangan Transport</th>
-                        <th class="p-3 text-center">Inventaris</th>
-                        <th class="p-3 text-center">Kontak</th>
-                        <th class="p-3 text-center">Dibuat</th>
-                        <th class="p-3 text-center">Actions</th>
+                        <th class="p-3 whitespace-nowrap text-center">No</th>
+                        <th class="p-3 whitespace-nowrap text-center">Area</th>
+                        <th class="p-3 whitespace-nowrap text-center">Gaji</th>
+                        <th class="p-3 whitespace-nowrap text-center">Pajak</th>
+                        <th class="p-3 whitespace-nowrap text-center">Alamat</th>
+                        <th class="p-3 whitespace-nowrap text-center">Lokasi</th>
+                        <th class="p-3 whitespace-nowrap text-center">Tunjangan Makan</th>
+                        <th class="p-3 whitespace-nowrap text-center">Tunjangan Transport</th>
+                        <th class="p-3 whitespace-nowrap text-center">Inventaris</th>
+                        <th class="p-3 whitespace-nowrap text-center">Kontak</th>
+                        <th class="p-3 whitespace-nowrap text-center">Dibuat</th>
+                        <th class="p-3 whitespace-nowrap text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>

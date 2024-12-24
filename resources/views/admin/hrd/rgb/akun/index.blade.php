@@ -72,7 +72,7 @@
                     <x-modal name="add-area-modal-{{ $account->id }}" focusable>
                         <div class="container mx-auto p-4 bg-black rounded-lg shadow">
                             <h2 class="text-lg font-bold text-white mb-4">Pilih form Surat</h2>
-                            <div class="space-y-3">
+                            <div class="flex flex-col gap-4">
                                 <!-- Tombol 1 -->
                                 <a href="{{ route('AkunRgb.edit', $account->id) }}"
                                     class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
@@ -80,17 +80,17 @@
                                 </a>
                                 <!-- Tombol 2 -->
                                 <a href="{{ route('peringatan') }}"
-                                    class="block w-full bg-red-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-600">
+                                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
                                     Surat Peringatan
                                 </a>
                                 <!-- Tombol 3 -->
                                 <a href="{{ route('teguran') }}"
-                                    class="block w-full bg-red-700 text-white px-4 py-2 rounded-md text-center hover:bg-red-800">
+                                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
                                     Surat Teguran
                                 </a>
                                 <!-- Tombol 4 -->
                                 <a href="{{ route('AkunRgb.edit', $account->id) }}"
-                                    class="block w-full bg-green-500 text-white px-4 py-2 rounded-md text-center hover:bg-green-600">
+                                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
                                     ID Card
                                 </a>
                             </div>
@@ -105,7 +105,7 @@
                     <x-modal name="add-area-modal2-{{ $account->id }}" focusable>
                         <div class="container mx-auto p-4 bg-black rounded-lg shadow">
                             <h2 class="text-lg font-bold text-white mb-4">Pilih Dokumen</h2>
-                            <div class="space-y-3">
+                            <div class="flex flex-col gap-2">
                                 <!-- Tombol 1 -->
                                 @if ($suratRealExists)
                                 <a href="{{ route('suratR.cetak', $account->nik) }}"

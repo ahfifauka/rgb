@@ -31,15 +31,20 @@
                 <p class="text-xl mt-2">Rp. {{ number_format($selisih, 2) }}</p>
             </div>
         </div>
-        <div class="flex gap-2">
-            <button type="button"
-                class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                x-data x-on:click="$dispatch('open-modal', 'add-area-modal')">
-                Tambah
-            </button>
+        <div class="flex justify-between">
+            <div class="flex gap-2">
+                <button type="button"
+                    class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                    x-data x-on:click="$dispatch('open-modal', 'add-area-modal')">
+                    Tambah
+                </button>
 
-            <a href="{{ route('keuangan.rgb') }}" class="bg-red-500 text-white rounded-md hover:bg-red-600"
-                style="padding: 10px 10px 10px 10px">Kembali</a>
+                <a href="{{ route('keuangan.rgb') }}" class="bg-red-500 text-white rounded-md hover:bg-red-600"
+                    style="padding: 10px 10px 10px 10px">Kembali</a>
+            </div>
+            <div class="flex">
+                <a href="{{route('cetak.kas')}}" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-md">Cetak</a>
+            </div>
         </div>
 
         <!-- Search and Page Length -->

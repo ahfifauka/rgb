@@ -5,6 +5,8 @@ namespace App\Http\Controllers\rgb;
 use App\Http\Controllers\Controller;
 use App\Models\Kas;
 use Illuminate\Http\Request;
+use TCPDF;
+use Carbon\Carbon;
 
 class KasRgbController extends Controller
 {
@@ -97,5 +99,63 @@ class KasRgbController extends Controller
         $kas = Kas::findOrFail($id);
         $kas->delete();
         return redirect()->route('kas.index')->with('success', 'Data kas berhasil dihapus.');
+    }
+    public function cetak()
+    {
+        // Ambil data kas untuk tahun yang sedang berjalan
+        $currentYear = Carbon::now()->year;  // Mendapatkan tahun saat ini
+        $data = Kas::whereYear('tanggal', $currentYear)->get();  // Filter berdasarkan tahun
+
+        // Inisialisasi TCPDF
+        $pdf = new TCPDF('L', 'mm', 'A4'); // Mode landscape
+        $pdf->SetHeaderData('', 0, 'Laporan Kas');
+
+        // Set font untuk header dan konten
+        $pdf->SetFont('helvetica', '', 12);
+
+        // Tambahkan halaman baru
+        $pdf->AddPage();
+
+        // Judul halaman
+        $pdf->SetFont('helvetica', 'B', 16);
+        $pdf->Cell(0, 10, 'Laporan Kas Tahun ' . $currentYear, 0, 1, 'C');
+        $pdf->Ln(10);  // Jarak setelah judul
+
+        // Header tabel
+        $pdf->SetFont('helvetica', 'B', 10);
+        $pdf->Cell(25, 10, 'Tanggal', 1, 0, 'C', 0);
+        $pdf->Cell(25, 10, 'Jenis', 1, 0, 'C', 0);
+        $pdf->Cell(30, 10, 'Jumlah', 1, 0, 'C', 0);
+        $pdf->Cell(50, 10, 'Keterangan', 1, 0, 'C', 0);
+        $pdf->Cell(20, 10, 'Tipe', 1, 0, 'C', 0);
+        $pdf->Cell(30, 10, 'Saldo', 1, 0, 'C', 0);
+        $pdf->Cell(30, 10, 'Pembayar', 1, 0, 'C', 0);
+        $pdf->Cell(30, 10, 'Metode', 1, 0, 'C', 0);
+        $pdf->Cell(38, 10, 'Referensi', 1, 1, 'C', 0);
+
+        // Set font untuk data
+        $pdf->SetFont('helvetica', '', 10);
+
+        // Fungsi untuk format rupiah
+        function formatRupiah($angka)
+        {
+            return 'Rp. ' . number_format($angka, 0, ',', '.');
+        }
+
+        // Menambahkan data ke tabel
+        foreach ($data as $kas) {
+            $pdf->Cell(25, 10, $kas->tanggal, 1, 0, 'C'); // Format tanggal
+            $pdf->Cell(25, 10, $kas->jenis, 1, 0, 'C');
+            $pdf->Cell(30, 10, formatRupiah($kas->jumlah), 1, 0, 'C');
+            $pdf->Cell(50, 10, $kas->keterangan, 1, 0, 'C');
+            $pdf->Cell(20, 10, $kas->tipe, 1, 0, 'C');
+            $pdf->Cell(30, 10, formatRupiah($kas->saldo), 1, 0, 'C');
+            $pdf->Cell(30, 10, $kas->nama_pembayar, 1, 0, 'C');
+            $pdf->Cell(30, 10, $kas->metode_pembayaran, 1, 0, 'C');
+            $pdf->Cell(38, 10, $kas->referensi, 1, 1, 'C');
+        }
+
+        // Output file PDF
+        $pdf->Output('Laporan_Kas_Tahun_' . $currentYear . '.pdf', 'I');
     }
 }

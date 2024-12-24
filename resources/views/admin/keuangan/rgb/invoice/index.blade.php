@@ -9,14 +9,20 @@
         </h2>
     </x-slot>
     <div class="p-6">
-        <button type="button"
-            class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-            onclick="openModal()">
-            Tambah
-        </button>
-
-        <a href="{{ route('keuangan.rgb') }}" class="ml-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-            style="padding: 10px 10px 10px 10px">Kembali</a>
+        <div class="flex justify-between">
+            <!-- Open modal trigger -->
+            <div class="flex gap-2">
+                <button type="button"
+                    class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                    x-data x-on:click="$dispatch('open-modal', 'add-area-modal')">
+                    Tambah
+                </button>
+                <a href="{{ route('keuangan.rgb') }}" class="p-2 bg-red-500 text-white rounded-md hover:bg-red-600">Kembali</a>
+            </div>
+            <div class="flex">
+                <a href="{{route('cetak.invoice')}}" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-md">Cetak</a>
+            </div>
+        </div>
 
         <!-- Search and Page Length -->
         <div class="mt-4 mb-4 flex justify-between items-center">
@@ -35,41 +41,44 @@
             <table id="data-table" class="min-w-full bg-gray-800 text-white rounded-md">
                 <thead>
                     <tr>
-                        <th class="p-3 text-center">No</th>
-                        <th class="p-3 text-center">No Invoice</th>
-                        <th class="p-3 text-center">No Faktur</th>
-                        <th class="p-3 text-center">Customer</th>
-                        <th class="p-3 text-center">Total Personil</th>
-                        <th class="p-3 text-center">Harga</th>
-                        <th class="p-3 text-center">Rekening</th>
-                        <th class="p-3 text-center">Dibuat</th>
-                        <th class="p-3 text-center">Actions</th>
+                        <th class="p-3 whitespace-nowrap text-center">No</th>
+                        <th class="p-3 whitespace-nowrap text-center">No Invoice</th>
+                        <th class="p-3 whitespace-nowrap text-center">No Faktur</th>
+                        <th class="p-3 whitespace-nowrap text-center">Customer</th>
+                        <th class="p-3 whitespace-nowrap text-center">Total Personil</th>
+                        <th class="p-3 whitespace-nowrap text-center">Harga</th>
+                        <th class="p-3 whitespace-nowrap text-center">Rekening</th>
+                        <th class="p-3 whitespace-nowrap text-center">Dibuat</th>
+                        <th class="p-3 whitespace-nowrap text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Sample Data -->
                     @foreach ($data as $account)
                     <tr>
-                        <td class="p-3 text-center uppercase">{{ $loop->iteration }}</td>
-                        <td class="p-3 text-center uppercase">{{ $account->no_invoice }}</td>
-                        <td class="p-3 text-center uppercase">{{ $account->no_faktur }}</td>
-                        <td class="p-3 text-center uppercase">{{ $account->customer }}</td>
-                        <td class="p-3 text-center uppercase">{{ $account->banyak }}</td>
-                        <td class="p-3 text-center uppercase">{{ $account->harga }}</td>
-                        <td class="p-3 text-center uppercase">{{ $account->rekening }}</td>
-                        <td class="p-3 text-center uppercase">{{ $account->created_at }}</td>
+                        <td class="p-3 whitespace-nowrap text-center uppercase">{{ $loop->iteration }}</td>
+                        <td class="p-3 whitespace-nowrap text-center uppercase">{{ $account->no_invoice }}</td>
+                        <td class="p-3 whitespace-nowrap text-center uppercase">{{ $account->no_faktur }}</td>
+                        <td class="p-3 whitespace-nowrap text-center uppercase">{{ $account->customer }}</td>
+                        <td class="p-3 whitespace-nowrap text-center uppercase">{{ $account->banyak }}</td>
+                        <td class="p-3 whitespace-nowrap text-center uppercase">{{ $account->harga }}</td>
+                        <td class="p-3 whitespace-nowrap text-center uppercase">{{ $account->rekening }}</td>
+                        <td class="p-3 whitespace-nowrap text-center uppercase">{{ $account->created_at }}</td>
                         </td>
                         <td class="p-3 text-center">
-                            <div class="flex gap-2">
-                                <a href="" class="text-green-500 hover:underline"><i
-                                        class="fa-solid fa-download"></i> Invoice</a>
-                                <a href="{{ route('invoice.edit', $account->id) }}"
-                                    class="text-blue-500 hover:underline">Edit</a>
-                                <form action="{{ route('invoice.destroy', $account->id) }}" method="POST"
-                                    class="inline-block">
+                            <div class="flex gap-2 justify-center">
+                                <a href="" class="flex items-center justify-center w-28 h-10 bg-green-500 hover:bg-green-600 text-white rounded-md">
+                                    <i class="fa-solid fa-download mr-2"></i> Invoice
+                                </a>
+                                <a href="{{ route('invoice.edit', $account->id) }}" class="flex items-center justify-center w-28 h-10 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md">
+                                    <i class="fa fa-pen mr-2"></i> Edit
+                                </a>
+                                <form action="{{ route('invoice.destroy', $account->id) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                                    <button type="submit" class="flex items-center justify-center w-28 h-10 bg-red-500 hover:bg-red-600 text-white rounded-md">
+                                        <i class="fa fa-trash mr-2"></i> Delete
+                                    </button>
                                 </form>
                             </div>
                         </td>
@@ -79,97 +88,78 @@
             </table>
         </div>
     </div>
-    <div id="customModal"
-        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity ease-out duration-300 opacity-0 pointer-events-none">
-        <div class="bg-gray-800 rounded-lg shadow-lg max-w-lg w-full transform transition-all duration-500 scale-95 opacity-0"
-            id="modalContent">
-            <!-- Modal header -->
-            <div class="flex justify-between items-center py-3 px-4 border-b">
-                <h3 class="font-bold text-white">
-                    Tambah Area
-                </h3>
-                <button type="button"
-                    class="inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
-                    onclick="closeModal()">
-                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M18 6 6 18"></path>
-                        <path d="m6 6 12 12"></path>
-                    </svg>
-                </button>
+    <x-modal name="add-area-modal" focusable>
+        <form action="{{ route('invoice.store') }}" method="POST">
+            @csrf
+            <div class="px-4 py-4">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">
+                    Buat Invoice
+                </h2>
+                <div class="mb-4 mt-4">
+                    <label for="no_invoice" class="block text-white">No Invoice</label>
+                    <input type="text" name="no_invoice" id="no_invoice"
+                        class="w-full px-3 py-2 border rounded-md text-black" required readonly
+                        value="{{ $invoiceNumber }}">
+                </div>
+                <div class="mb-4">
+                    <label for="no_faktur" class="block text-white">No Faktur</label>
+                    <input type="number" name="no_faktur" id="no_faktur"
+                        class="w-full px-3 py-2 border rounded-md text-black" required>
+                </div>
+                <div class="mb-4">
+                    <label for="customer" class="block text-white">Customer</label>
+                    <select name="customer" id="customer" class="w-full px-3 py-2 border rounded-md text-black"
+                        required>
+                        <option value="" disabled selected>-- Pilih Customer --</option>
+                        @foreach ($lokasi as $item)
+                        <option value="{{ $item->area }}">{{ $item->area }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="banyak" class="block text-white">Banyak Personil</label>
+                    <input type="number" name="banyak" id="banyak"
+                        class="w-full px-3 py-2 border rounded-md text-black" required>
+                </div>
+                <div class="mb-4">
+                    <label for="harga" class="block text-white">Harga</label>
+                    <input type="number" name="harga" id="harga"
+                        class="w-full px-3 py-2 border rounded-md text-black" required>
+                </div>
+                <div class="mb-4">
+                    <label for="rekening" class="block text-white">Rekening</label>
+                    <select name="rekening" id="rekening" class="w-full px-3 py-2 border rounded-md text-black">
+                        <option disabled selected>-- Pilih Jenis Rekening --</option>
+                        <option value="NON PPN | 1234567890 | BCA">NON PPN | 1234567890 | BCA</option>
+                        <option value="PPN | 0987654321 | BRI">PPN | 0987654321 | BRI</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="periode" class="block text-white">Pilih Periode</label>
+                    <input type="text" id="periode" name="periode"
+                        class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-500"
+                        placeholder="Pilih periode" required>
+                </div>
+                <div class="mb-4">
+                    <label for="due_date" class="block text-white">Jatuh Tempo</label>
+                    <input type="text" id="due_date" name="due_date"
+                        class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-500"
+                        placeholder="Pilih Jatuh Tempo" required>
+                </div>
+                <div class="mb-4">
+                    <label for="penggantian" class="block text-white">Penggantian</label>
+                    <input type="number" name="penggantian" id="penggantian"
+                        class="w-full px-3 py-2 border rounded-md text-black" required>
+                </div>
+                <!-- Submit Button -->
+                <div class="flex justify-end">
+                    <button type="button" onclick="closeModal()"
+                        class="px-4 py-2 bg-gray-500 text-white rounded-md mr-2">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Simpan</button>
+                </div>
             </div>
-
-            <!-- Modal content -->
-            <div class="p-4">
-                <form action="{{ route('invoice.store') }}" method="POST">
-                    @csrf
-                    <div class="mb-4">
-                        <label for="no_invoice" class="block text-white">No Invoice</label>
-                        <input type="text" name="no_invoice" id="no_invoice"
-                            class="w-full px-3 py-2 border rounded-md text-black" required readonly
-                            value="{{ $invoiceNumber }}">
-                    </div>
-                    <div class="mb-4">
-                        <label for="no_faktur" class="block text-white">No Faktur</label>
-                        <input type="number" name="no_faktur" id="no_faktur"
-                            class="w-full px-3 py-2 border rounded-md text-black" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="customer" class="block text-white">Customer</label>
-                        <select name="customer" id="customer" class="w-full px-3 py-2 border rounded-md text-black"
-                            required>
-                            <option value="" disabled selected>-- Pilih Customer --</option>
-                            @foreach ($lokasi as $item)
-                            <option value="{{ $item->area }}">{{ $item->area }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="banyak" class="block text-white">Banyak Personil</label>
-                        <input type="number" name="banyak" id="banyak"
-                            class="w-full px-3 py-2 border rounded-md text-black" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="harga" class="block text-white">Harga</label>
-                        <input type="number" name="harga" id="harga"
-                            class="w-full px-3 py-2 border rounded-md text-black" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="rekening" class="block text-white">Rekening</label>
-                        <select name="rekening" id="rekening" class="w-full px-3 py-2 border rounded-md text-black">
-                            <option disabled selected>-- Pilih Jenis Rekening --</option>
-                            <option value="NON PPN | 1234567890 | BCA">NON PPN | 1234567890 | BCA</option>
-                            <option value="PPN | 0987654321 | BRI">PPN | 0987654321 | BRI</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="periode" class="block text-white">Pilih Periode</label>
-                        <input type="text" id="periode" name="periode"
-                            class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-500"
-                            placeholder="Pilih periode" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="due_date" class="block text-white">Jatuh Tempo</label>
-                        <input type="text" id="due_date" name="due_date"
-                            class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-500"
-                            placeholder="Pilih Jatuh Tempo" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="penggantian" class="block text-white">Penggantian</label>
-                        <input type="number" name="penggantian" id="penggantian"
-                            class="w-full px-3 py-2 border rounded-md text-black" required>
-                    </div>
-                    <!-- Submit Button -->
-                    <div class="flex justify-end">
-                        <button type="button" onclick="closeModal()"
-                            class="px-4 py-2 bg-gray-500 text-white rounded-md mr-2">Batal</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+        </form>
+    </x-modal>
     <div class="h-20"></div>
     <!-- Add JavaScript to handle modal open/close with animation -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -188,42 +178,5 @@
                 dateFormat: "Y-m-d",
             });
         });
-    </script>
-    <script>
-        function openModal() {
-            const modal = document.getElementById('customModal');
-            const modalContent = document.getElementById('modalContent');
-
-            // Show the modal background
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0', 'pointer-events-none');
-                modal.classList.add('opacity-100');
-            }, 10); // Delay to trigger CSS transition
-
-            // Animate the modal content (scale up and fade in)
-            setTimeout(() => {
-                modalContent.classList.remove('scale-95', 'opacity-0');
-                modalContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('customModal');
-            const modalContent = document.getElementById('modalContent');
-
-            // Animate the modal content (scale down and fade out)
-            modalContent.classList.remove('scale-100', 'opacity-100');
-            modalContent.classList.add('scale-95', 'opacity-0');
-
-            // Hide the modal background after animation completes
-            setTimeout(() => {
-                modal.classList.add('opacity-0', 'pointer-events-none');
-                modal.classList.remove('opacity-100');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 300); // Time for the background to fade out
-            }, 300); // Time for the modal content animation
-        }
     </script>
 </x-app-layout>

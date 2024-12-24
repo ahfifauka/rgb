@@ -103,14 +103,23 @@
         <div class="container mx-auto p-4 bg-black rounded-lg shadow">
             <h2 class="text-lg font-bold text-white mb-4">Pilih tools</h2>
             <div class="space-y-3">
+                <h2 class="text-lg font-bold text-white mb-4">Cetak Presensi / Area</h2>
                 <!-- Tombol 1 -->
-                <a href="{{ route('laporan.presensi') }}"
-                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
-                    Cetak
-                </a>
+                <form action="{{ route('laporan.presensi') }}" method="post">
+                    @csrf
+                    <select name="area" id="area" class="text-black w-full rounded">
+                        <option value=""> -- Pilih Area --</option>
+                        @foreach($area as $a)
+                        <option value="{{$a}}">{{$a}}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="block mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">Cetak</button>
+                </form>
                 <!-- Tombol 2 -->
+                <hr class="text-white">
+                <h2 class="text-lg font-bold text-white mb-4">Detail Presensi</h2>
                 <a href="{{ route('detail.admin') }}"
-                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
+                    class="mt-4 block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
                     Detail
                 </a>
                 <!-- Tombol 3 -->

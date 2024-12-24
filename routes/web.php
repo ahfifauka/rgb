@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
     //oprational-presensi
     Route::resource('presensi', PresensiRgbController::class);
     Route::get('/detail/presensi', [PresensiRgbController::class, 'detailA'])->name('detail.admin');
-    Route::get('/laporan-presensi', [PresensiRgbController::class, 'generateLaporanPresensi'])->name('laporan.presensi');
+    Route::post('/laporan-presensi', [PresensiRgbController::class, 'generateLaporanPresensi'])->name('laporan.presensi');
     //oprational-patroli
     Route::resource('patroli', PatroliRgbController::class);
     Route::get('show/patroli/{nik}', [PatroliRgbController::class, 'detail'])->name('show.patroli');

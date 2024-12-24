@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\rgb;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\Jadwal;
 use App\Models\Presensi;
 use App\Models\User;
@@ -60,8 +61,11 @@ class PresensiRgbController extends Controller
             ];
         });
 
+        $area = Area::all()->pluck('area');
+
         return view('admin.oprational.rgb.presensi.index', [
             'data' => $data,
+            'area' => $area,
         ]);
     }
 
@@ -188,11 +192,13 @@ class PresensiRgbController extends Controller
         //
     }
 
-    public function generateLaporanPresensi()
+    public function generateLaporanPresensi(Request $request)
     {
         // Ambil data anggota dan presensi
         $anggota = User::where('jabatan', 'anggota')->get(['name', 'nik', 'area']);
-        $presensiData = Presensi::whereIn('nik', $anggota->pluck('nik'))->get();
+        $presensiData = Presensi::whereIn('nik', $anggota->pluck('nik'))
+            ->where('area', $request->area)
+            ->get();
 
         $data = $anggota->map(function ($anggota) use ($presensiData) {
             $anggotaPresensi = $presensiData->where('nik', $anggota->nik);
@@ -242,7 +248,7 @@ class PresensiRgbController extends Controller
         $pdf->Cell(0, 10, 'Laporan Presensi', 0, 1, 'C');
 
         // Set font untuk tabel
-        $pdf->SetFont('helvetica', '', 7);
+        $pdf->SetFont('helvetica', '', 5);
 
         // Buat header tabel
         $pdf->SetFillColor(200, 220, 255); // Set warna latar belakang header
@@ -268,8 +274,37 @@ class PresensiRgbController extends Controller
             $pdf->Cell(15, 7, $item['area'], 1);
 
             // Tampilkan status per hari (1-31)
-            foreach ($item['status'] as $status) {
-                $pdf->Cell(5.8, 7, $status, 1, 0, 'C');
+            foreach ($item['timestamps'] as $i => $timestamp) {
+                if ($timestamp) {
+                    if ($timestamp['created_at'] === $timestamp['updated_at']) {
+                        // Set warna hijau untuk teks jika hanya satu timestamp
+                        $pdf->SetTextColor(0, 128, 0); // Hijau
+                        $text = date('H:i', strtotime($timestamp['created_at']));
+                        $pdf->Cell(5.8, 7, $text, 1, 0, 'C');
+                        $pdf->SetTextColor(0, 0, 0); // Reset warna ke hitam
+                    } else {
+                        // Ambil posisi saat ini
+                        $x = $pdf->GetX();
+                        $y = $pdf->GetY();
+
+                        // Cetak created_at dengan warna hijau
+                        $pdf->SetTextColor(0, 128, 0); // Hijau
+                        $pdf->SetXY($x, $y);
+                        $pdf->Cell(5.8, 3.5, date('H:i', strtotime($timestamp['created_at'])), 0, 0, 'C');
+
+                        // Cetak updated_at dengan warna merah
+                        $pdf->SetTextColor(255, 0, 0); // Merah
+                        $pdf->SetXY($x, $y + 3.5);
+                        $pdf->Cell(5.8, 3.5, date('H:i', strtotime($timestamp['updated_at'])), 0, 0, 'C');
+
+                        // Gambar border untuk cell
+                        $pdf->SetTextColor(0, 0, 0); // Reset warna ke hitam
+                        $pdf->SetXY($x, $y);
+                        $pdf->Cell(5.8, 7, '', 1, 0);
+                    }
+                } else {
+                    $pdf->Cell(5.8, 7, $item['status'][$i] ?? 'B', 1, 0, 'C'); // Default status
+                }
             }
 
             // Tampilkan count M, TK, B

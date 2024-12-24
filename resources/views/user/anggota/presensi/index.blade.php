@@ -36,7 +36,7 @@
                 <input type="hidden" class="w-full rounded text-black" name="ket1" id="ket1" readonly>
             </div>
 
-            <!-- Submit button for form (will be shown/hidden based on time and lateness) -->
+            <!-- Submit button for form -->
             <button type="submit" id="submitButton"
                 class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full mt-4">
                 Submit
@@ -64,10 +64,8 @@
         const latitudeInput = document.getElementById("latitudeInput");
         const longitudeInput = document.getElementById("longitudeInput");
         const googleMapsLink = document.getElementById("googleMapsLink");
-
         const submitButton = document.getElementById("submitButton");
         const ketInput = document.getElementById("ket1");
-        const lateCheckbox = document.getElementById("lateCheckbox");
 
         // Automatically start front camera when page loads
         const constraints = {
@@ -118,11 +116,6 @@
             // Set keterangan
             ketInput.value = keterangan;
         }
-
-
-        // Run check on page load and when late checkbox changes
-        window.onload = checkTimeAndLateStatus;
-        lateCheckbox.onchange = checkTimeAndLateStatus;
 
         // Automatically get current location when the page loads
         window.onload = function() {

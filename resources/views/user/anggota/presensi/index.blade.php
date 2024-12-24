@@ -54,6 +54,38 @@
         </form>
     </div>
     <div class="h-20"></div>
+    <nav class="fixed bottom-0 left-0 right-0 bg-gray-800 shadow-lg ">
+        <div class="container mx-auto p-4 flex justify-between">
+
+            <!-- Home Icon -->
+            <a href="{{ route('dashboard') }}" class="text-center flex justify-center items-center gap-2 flex-col nav-item"
+                id="home">
+                <i class="fas fa-home text-2xl text-gray-300"></i>
+                <span class="text-sm text-gray-300">Home</span>
+            </a>
+
+            <!-- Keuangan Icon -->
+            <a href="{{ route('anggota.index') }}"
+                class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="keuangan">
+                <i class="fa-solid fa-users text-2xl text-gray-300"></i>
+                <span class="text-sm text-gray-300">Anggota</span>
+            </a>
+
+            <!-- Operational Icon -->
+            <a href="{{ route('danru.index') }}"
+                class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="operational">
+                <i class="fa-solid fa-user-tie text-2xl text-gray-300"></i>
+                <span class="text-sm text-gray-300">Danru</span>
+            </a>
+
+            <a href="{{ route('korwil.index') }}"
+                class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="operational">
+                <i class="fa-solid fa-car text-2xl text-gray-300"></i>
+                <span class="text-sm text-gray-300">Korwil</span>
+            </a>
+
+        </div>
+    </nav>
 
     <script>
         const video = document.getElementById("video");

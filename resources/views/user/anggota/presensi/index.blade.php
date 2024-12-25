@@ -64,12 +64,12 @@
             <h2 class=" text-lg font-bold text-gray-900 dark:text-gray-100">
                 Form Izin
             </h2>
-            <input type="text" name="name2" id="name2" value="{{ Auth::user()->name }}" required readonly>
-            <input type="text" name="location2" id="locationInput2" required readonly>
-            <input type="text" name="nik2" id="nik2" value="{{ Auth::user()->nik }}" required readonly>
-            <input type="text" name="area2" id="area2" value="{{ Auth::user()->area }}" required readonly>
-            <input type="text" name="bagian2" id="bagian2" value="rumah" required readonly>
-            <input type="text" name="sesi2" id="sesi2" value="{{ $jadwal ? $jadwal->{now()->day} : '' }}" required readonly>
+            <input type="hidden" name="name2" id="name2" value="{{ Auth::user()->name }}" required readonly>
+            <input type="hidden" name="location2" id="locationInput2" required readonly>
+            <input type="hidden" name="nik2" id="nik2" value="{{ Auth::user()->nik }}" required readonly>
+            <input type="hidden" name="area2" id="area2" value="{{ Auth::user()->area }}" required readonly>
+            <input type="hidden" name="bagian2" id="bagian2" value="rumah" required readonly>
+            <input type="hidden" name="sesi2" id="sesi2" value="{{ $jadwal ? $jadwal->{now()->day} : '' }}" required readonly>
             <div class="mt-4">
                 <label for="keterangan" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Keterangan</label>
                 <select name="keterangan" id="keterangan" class="w-full mt-1 px-3 py-2 border rounded-md text-black">

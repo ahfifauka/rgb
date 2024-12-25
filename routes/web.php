@@ -117,13 +117,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/surat/cetak/real/{nik}', [SuratController::class, 'real'])->name('suratR.cetak');
     Route::get('/surat/cetak/sementara/{nik}', [SuratController::class, 'sementara'])->name('suratS.cetak');
     //hrd-akun-surat peringatan
-    Route::get('/surat/peringatan', [SuratController::class, 'peringatan'])->name('peringatan');
+    Route::get('/surat/peringatan/{id}', [SuratController::class, 'peringatan'])->name('peringatan');
     Route::post('/surat/peringatan/post', [SuratController::class, 'peringatanp'])->name('peringatan.post');
     Route::get('/surat/peringatan/cetak/{nik}', [SuratController::class, 'peringatanc'])->name('peringatan.cetak');
     //hrd-akun-surat teguran
-    Route::get('/surat/teguran', [SuratController::class, 'teguran'])->name('teguran');
+    Route::get('/surat/teguran/{id}', [SuratController::class, 'teguran'])->name('teguran');
     Route::post('/surat/teguran/post', [SuratController::class, 'teguranp'])->name('teguran.post');
     Route::get('/surat/teguran/cetak/{nik}', [SuratController::class, 'teguranc'])->name('teguran.cetak');
+    //hrd-akun-pkwt
+    Route::get('/surat/pkwt/{id}', [SuratController::class, 'pkwt'])->name('pkwt');
+    Route::post('/surat/pkwt/post', [SuratController::class, 'pkwtp'])->name('pkwt.post');
+    Route::get('/surat/pkwt/cetak/{nik}', [SuratController::class, 'pkwtc'])->name('pkwt.cetak');
 
 
     //hrd-data-rgb

@@ -47,6 +47,7 @@
                         @php
                         $suratRealExists = $suratStatus->get($account->nik)?->contains('status', 'Real');
                         $suratSemenExists = $suratStatus->get($account->nik)?->contains('status', 'Sementara');
+                        $suratPkwt = $suratStatus->get($account->nik)?->contains('status', 'PKWT');
                         $suratP = $suratStatus2->get($account->nik)?->contains('status', 'peringatan');
                         $suratT = $suratStatus2->get($account->nik)?->contains('status', 'teguran');
                         @endphp
@@ -73,18 +74,22 @@
                         <div class="container mx-auto p-4 bg-black rounded-lg shadow">
                             <h2 class="text-lg font-bold text-white mb-4">Pilih form Surat</h2>
                             <div class="flex flex-col gap-4">
+                                <a href="{{ route('pkwt', $account->id ) }}"
+                                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
+                                    PKWT
+                                </a>
                                 <!-- Tombol 1 -->
                                 <a href="{{ route('AkunRgb.edit', $account->id) }}"
                                     class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
                                     Surat Tugas
                                 </a>
                                 <!-- Tombol 2 -->
-                                <a href="{{ route('peringatan') }}"
+                                <a href="{{ route('peringatan', $account->id) }}"
                                     class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
                                     Surat Peringatan
                                 </a>
                                 <!-- Tombol 3 -->
-                                <a href="{{ route('teguran') }}"
+                                <a href="{{ route('teguran', $account->id) }}"
                                     class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
                                     Surat Teguran
                                 </a>
@@ -126,6 +131,17 @@
                                     style="padding: 0 5px 0 5px">
                                     Sementara Belum dibuat</span>
                                 @endif
+
+                                @if ($suratPkwt)
+                                <a href="{{ route('pkwt.cetak', $account->nik) }}"
+                                    class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600"><i
+                                        class="fa-solid fa-download"></i> PKWT</a>
+                                @else
+                                <span class="block w-full bg-red-500 text-white px-4 py-2 rounded-md text-center"
+                                    style="padding: 0 5px 0 5px">
+                                    PKWT Belum dibuat</span>
+                                @endif
+
                                 @if ($suratP)
                                 <a href="{{ route('peringatan.cetak', $account->nik) }}"
                                     class="block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600"><i

@@ -41,6 +41,11 @@
                 class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full mt-4">
                 Submit
             </button>
+            <button type="button"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full mt-4"
+                x-data x-on:click="$dispatch('open-modal', 'add-area-modal')">
+                Izin
+            </button>
             <div id="coordinatesDisplay w-full p-4" class="mt-4">
                 <p>Coordinates:</p>
                 <p>Latitude: <span id="latitudeInput">N/A</span></p>
@@ -53,6 +58,44 @@
             </div>
         </form>
     </div>
+    <x-modal name="add-area-modal" focusable>
+        <form action="{{ route('izin.anggota.store') }}" method="POST" class="p-6" enctype="multipart/form-data">
+            @csrf
+            <h2 class=" text-lg font-bold text-gray-900 dark:text-gray-100">
+                Form Izin
+            </h2>
+            <input type="text" name="name2" id="name2" value="{{ Auth::user()->name }}" required readonly>
+            <input type="text" name="location2" id="locationInput2" required readonly>
+            <input type="text" name="nik2" id="nik2" value="{{ Auth::user()->nik }}" required readonly>
+            <input type="text" name="area2" id="area2" value="{{ Auth::user()->area }}" required readonly>
+            <input type="text" name="bagian2" id="bagian2" value="rumah" required readonly>
+            <input type="text" name="sesi2" id="sesi2" value="{{ $jadwal ? $jadwal->{now()->day} : '' }}" required readonly>
+            <div class="mt-4">
+                <label for="keterangan" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Keterangan</label>
+                <select name="keterangan" id="keterangan" class="w-full mt-1 px-3 py-2 border rounded-md text-black">
+                    <option disabled selected>-- Pilih Izin --</option>
+                    <option value="Sakit">Sakit</option>
+                    <option value="Izin">Izin</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <label for="file" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Upload Lampiran ( Optional )</label>
+                <input type="file" name="file" id="file" class="w-full mt-1 px-3 py-2 border rounded-md text-white">
+            </div>
+            <div class="mt-4">
+                <label for="keterangan2" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Lama Izin ( Jika sakit sesuai surat sakit )</label>
+                <input type="number" name="keterangan2" id="keterangan2" class="w-full mt-1 px-3 py-2 border rounded-md text-black" required>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    Batal
+                </x-secondary-button>
+                <x-primary-button class="ml-3">
+                    Simpan
+                </x-primary-button>
+            </div>
+        </form>
+    </x-modal>
     <div class="h-20"></div>
     <nav class="fixed bottom-0 left-0 right-0 bg-gray-800 shadow-lg ">
         <div class="container mx-auto p-4 flex justify-between">
@@ -93,6 +136,7 @@
         const capturedImage = document.getElementById("capturedImage");
         const capturedImageInput = document.getElementById("capturedImageInput");
         const locationInput = document.getElementById("locationInput");
+        const locationInput2 = document.getElementById("locationInput2");
         const latitudeInput = document.getElementById("latitudeInput");
         const longitudeInput = document.getElementById("longitudeInput");
         const googleMapsLink = document.getElementById("googleMapsLink");
@@ -159,6 +203,7 @@
                     // Create Google Maps link with a marker
                     const locationLink = `https://www.google.com/maps/?q=${lat},${lng}`;
                     locationInput.value = locationLink; // Store link in the input
+                    locationInput2.value = locationLink; // Store link in the input
                     latitudeInput.textContent = lat.toFixed(6); // Display latitude
                     longitudeInput.textContent = lng.toFixed(6); // Display longitude
                     googleMapsLink.href = locationLink; // Set link for viewing on Google Maps

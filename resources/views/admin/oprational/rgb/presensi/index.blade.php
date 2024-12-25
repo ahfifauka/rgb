@@ -3,15 +3,10 @@
         color: red;
     }
 
-    .M {
-        color: green;
-    }
-
     .B {
-        color: gray;
+        color: grey;
     }
 </style>
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-200 leading-tight">
@@ -56,9 +51,10 @@
                         @for ($i = 1; $i <= 31; $i++)
                             <th class="p-3 text-center">{{ $i }}</th>
                             @endfor
-                            <th class="p-3 text-center M">M</th>
+                            <th class="p-3 text-center text-green-500">M</th>
                             <th class="p-3 text-center TK">TK</th>
-                            <th class="p-3 text-center B">B</th>
+                            <th class="p-3 text-center text-yellow-500">S</th>
+                            <th class="p-3 text-center text-purple-500">I</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,31 +65,41 @@
                         <td class="p-3 text-center uppercase">{{ $item['nik'] }}</td>
                         <td class="p-3 text-center uppercase">{{ $item['area'] }}</td>
                         @for ($i = 1; $i <= 31; $i++)
-                            <td class="p-3 text-center uppercase ">
-
-                            @if($item['timestamps'][$i])
-                            @if($item['timestamps'][$i]['created_at'] === $item['timestamps'][$i]['updated_at'])
+                            <td class="p-3 text-center uppercase">
+                            @if ($item['status'][$i] === 'M')
+                            @if ($item['timestamps'][$i]['created_at'] === $item['timestamps'][$i]['updated_at'])
                             <p class="text-green-500">{{ $item['timestamps'][$i]['created_at'] }}</p>
                             @else
                             <p class="text-green-500">{{ $item['timestamps'][$i]['created_at'] }}</p>
                             <p class="text-blue-500">{{ $item['timestamps'][$i]['updated_at'] }}</p>
                             @endif
                             @else
+                            @if ($item['status'][$i] === 'S')
+
+                            <div class="text-yellow-500">S</div> <!-- Menampilkan S untuk Sakit -->
+                            @elseif ($item['status'][$i] === 'I')
+                            <div class="text-purple-500">I</div> <!-- Menampilkan I untuk Izin -->
+                            @else
                             <div class="{{ $item['status'][$i] ?? 'B' }}">{{ $item['status'][$i] ?? 'B' }}</div>
                             @endif
+                            @endif
+                            </td>
                             @endfor
                             <td class="p-3 text-center uppercase">
-                                {{ $item['counts']['M'] }}
+                                {{ $item['counts']['M'] }} <!-- Jumlah Kehadiran -->
                             </td>
                             <td class="p-3 text-center uppercase">
-                                {{ $item['counts']['TK'] }}
+                                {{ $item['counts']['TK'] }} <!-- Jumlah Tidak Hadir -->
                             </td>
                             <td class="p-3 text-center uppercase">
-                                {{ $item['counts']['B'] }}
+                                {{ $item['counts']['S'] }} <!-- Jumlah Sakit -->
                             </td>
-
+                            <td class="p-3 text-center uppercase">
+                                {{ $item['counts']['I'] }} <!-- Jumlah Izin -->
+                            </td>
                     </tr>
                     @endforeach
+
                 </tbody>
             </table>
         </div>

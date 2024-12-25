@@ -152,6 +152,7 @@ Route::middleware('auth')->group(function () {
     //anggota atau users
     Route::resource('anggota', AnggotaController::class);
     Route::get('/pulang/{id}', [PresensiRgbController::class, 'pulang'])->name('presensi.pulang');
+    Route::post('/izin/anggota', [PresensiRgbController::class, 'izin'])->name('izin.anggota.store');
     Route::resource('patroliU', PatroliController::class);
     //anggota-danru
     Route::resource('danru', DanruController::class);

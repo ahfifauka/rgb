@@ -8,7 +8,7 @@ use App\Models\Jadwal;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Carbon\Carbon; // Make sure to import Carbon
 
 class JadwalRgbController extends Controller
 {
@@ -17,9 +17,15 @@ class JadwalRgbController extends Controller
      */
     public function index()
     {
-        $data = Jadwal::orderBy('area')  // Urutkan berdasarkan 'area'
-            ->orderBy('name')  // Urutkan berdasarkan 'name' jika 'area' sama
+        $currentMonth = Carbon::now()->month; // Mendapatkan bulan saat ini
+        $currentYear = Carbon::now()->year;   // Mendapatkan tahun saat ini
+
+        $data = Jadwal::whereMonth('created_at', $currentMonth) // Filter berdasarkan bulan
+            ->whereYear('created_at', $currentYear)             // Filter berdasarkan tahun
+            ->orderBy('area')                                   // Urutkan berdasarkan 'area'
+            ->orderBy('name')                                   // Urutkan berdasarkan 'name' jika 'area' sama
             ->get();
+
 
         return view('admin.oprational.rgb.jadwal.index', compact('data'));
     }

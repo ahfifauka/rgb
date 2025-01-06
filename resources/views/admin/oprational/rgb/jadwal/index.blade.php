@@ -5,10 +5,22 @@
         </h2>
     </x-slot>
     <div class="p-6">
-        <a href="{{ route('jadwal.create') }}"
-            class="bg-blue-500 text-white rounded-md hover:bg-blue-600 px-4 py-2 mb-4">Tambah</a>
-        <a href="{{ route('oprational.rgb') }}"
-            class="bg-red-500 text-white rounded-md hover:bg-red-600 px-4 py-2 mb-4 ml-2">Kembali</a>
+        <div class="w-full flex justify-between">
+            <div>
+                <a href="{{ route('jadwal.create') }}"
+                    class="bg-blue-500 text-white rounded-md hover:bg-blue-600 px-4 py-2 mb-4">Tambah</a>
+                <a href="{{ route('oprational.rgb') }}"
+                    class="bg-red-500 text-white rounded-md hover:bg-red-600 px-4 py-2 mb-4 ml-2">Kembali</a>
+            </div>
+            <div>
+                <button type="button"
+                    class="py-2 px-4 inline-flex items-center whitespace-nowrap gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                    x-data x-on:click="$dispatch('open-modal', 'add-jadwal-modal')">
+                    Tools
+                </button>
+            </div>
+        </div>
+
         <div class="mt-4 mb-4 flex justify-between items-center">
             <input type="text" id="search-input" placeholder="Search..."
                 class="px-3 py-2 bg-gray-700 text-white rounded-md">
@@ -54,6 +66,39 @@
         </div>
     </div>
     <div class="h-40"></div>
+    <x-modal name="add-jadwal-modal" focusable>
+        <div class="container mx-auto p-4 bg-black rounded-lg shadow">
+            <h2 class="text-lg font-bold text-white mb-4">Pilih tools</h2>
+            <div class="space-y-3">
+                <h2 class="text-lg font-bold text-white mb-4">Cetak Presensi / Area</h2>
+                <!-- Tombol 1 -->
+                <form action="{{ route('laporan.jadwal') }}" method="post">
+                    @csrf
+                    <select name="area" id="area" class="text-black w-full rounded">
+                        <option value=""> -- Pilih Area --</option>
+                        @foreach($area as $a)
+                        <option value="{{$a}}">{{$a}}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="block mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">Cetak</button>
+                </form>
+                <!-- Tombol 2 -->
+                <hr class="text-white">
+                <h2 class="text-lg font-bold text-white mb-4">Detail Presensi</h2>
+                <a href="{{ route('detail.admin') }}"
+                    class="mt-4 block w-full bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600">
+                    Detail
+                </a>
+                <!-- Tombol 3 -->
+            </div>
+            <!-- Tombol Batal -->
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    Batal
+                </x-secondary-button>
+            </div>
+        </div>
+    </x-modal>
     <nav class="footer">
         <div class="container mx-auto p-4 flex justify-between">
 
@@ -65,7 +110,7 @@
             </a>
 
             <!-- Keuangan Icon -->
-            @if( Auth::user()->jabatan == 'Administrasi' || Auth::user()->jabatan == 'direktur')
+            @if( Auth::user()->jabatan == 'administrasi' || Auth::user()->jabatan == 'direktur')
             <a href="{{ route('keuangan.index') }}"
                 class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="keuangan">
                 <i class="fas fa-wallet text-2xl text-gray-300"></i>
@@ -74,7 +119,7 @@
             @endif
 
             <!-- Operational Icon -->
-            @if( Auth::user()->jabatan == 'Oprational' || Auth::user()->jabatan == 'direktur')
+            @if( Auth::user()->jabatan == 'oprational' || Auth::user()->jabatan == 'direktur')
             <a href="{{ route('oprational.index') }}"
                 class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="operational">
                 <i class="fas fa-cogs text-2xl text-gray-300"></i>
@@ -83,7 +128,7 @@
             @endif
 
             <!-- HRD Icon -->
-            @if( Auth::user()->jabatan == 'Hrd' || Auth::user()->jabatan == 'direktur')
+            @if( Auth::user()->jabatan == 'hrd' || Auth::user()->jabatan == 'direktur')
             <a href="{{ route('hrd.index') }}" class="text-center flex justify-center items-center gap-2 flex-col nav-item"
                 id="hrd">
                 <i class="fas fa-users text-2xl text-gray-300"></i>
@@ -92,7 +137,7 @@
             @endif
 
             <!-- Profile Icon -->
-            @if( Auth::user()->jabatan == 'Marketing' || Auth::user()->jabatan == 'direktur')
+            @if( Auth::user()->jabatan == 'marketing' || Auth::user()->jabatan == 'direktur')
             <a href="{{ route('marketing.index') }}"
                 class="text-center flex justify-center items-center gap-2 flex-col nav-item" id="marketing">
                 <i class="fas fa-building text-2xl text-gray-300"></i>

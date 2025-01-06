@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon; // Make sure to import Carbon
+use TCPDF;
 
 class JadwalRgbController extends Controller
 {
@@ -19,6 +20,7 @@ class JadwalRgbController extends Controller
     {
         $currentMonth = Carbon::now()->month; // Mendapatkan bulan saat ini
         $currentYear = Carbon::now()->year;   // Mendapatkan tahun saat ini
+        $area = Area::all()->pluck('area');
 
         $data = Jadwal::whereMonth('created_at', $currentMonth) // Filter berdasarkan bulan
             ->whereYear('created_at', $currentYear)             // Filter berdasarkan tahun
@@ -27,7 +29,7 @@ class JadwalRgbController extends Controller
             ->get();
 
 
-        return view('admin.oprational.rgb.jadwal.index', compact('data'));
+        return view('admin.oprational.rgb.jadwal.index', compact('data', 'area'));
     }
 
     /**
@@ -165,5 +167,87 @@ class JadwalRgbController extends Controller
         }
 
         return redirect()->back()->with('success', 'Template successfully uploaded and processed.');
+    }
+
+    public function generateLaporanJadwal(Request $request)
+    {
+        $currentMonth = Carbon::now()->month; // Bulan saat ini
+        $currentYear = Carbon::now()->year;   // Tahun saat ini
+
+        // Ambil jumlah hari dalam bulan yang sedang berjalan
+        $daysInMonth = Carbon::now()->daysInMonth;
+
+        // Ambil data area berdasarkan input request
+        $area = Jadwal::whereMonth('created_at', $currentMonth) // Filter berdasarkan bulan
+            ->whereYear('created_at', $currentYear)           // Filter berdasarkan tahun
+            ->where('area', $request->area)
+            ->orderBy('area')                                   // Urutkan berdasarkan 'area'
+            ->orderBy('name')                                   // Urutkan berdasarkan 'name' jika 'area' sama
+            ->get();
+
+        // Inisialisasi TCPDF
+        $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); // Landscape
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Your App Name');
+        $pdf->SetTitle('Laporan Jadwal');
+        $pdf->SetSubject('Laporan Jadwal Area');
+        $pdf->SetKeywords('TCPDF, PDF, laporan, jadwal');
+
+        // Set margin lebih kecil dan header/footer tidak dicetak
+        $pdf->SetMargins(10, 10, 10); // Atur margin kecil
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+
+        // Tambahkan halaman baru
+        $pdf->AddPage();
+
+        // Judul dokumen
+        $html = '
+    <h1 style="text-align: center; font-size: 14px;">Laporan Jadwal Area</h1>
+    <p style="text-align: center; font-size: 12px;">Area: ' . htmlspecialchars($request->area) . '</p>
+    <table border="1" cellpadding="4" style="width: 100%; border-collapse: collapse; font-size: 10px; white-space: nowrap;">
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th style="text-align: center; white-space: nowrap; font-size: 8px;">No</th>
+                <th style="text-align: center; white-space: nowrap; font-size: 8px; width: 140px;">Nama</th>
+                <th style="text-align: center; white-space: nowrap; font-size: 8px; width: 100px;">NIK</th>';
+
+        // Tambahkan kolom sesuai jumlah hari dalam bulan
+        for ($i = 1; $i <= $daysInMonth; $i++) {
+            $html .= '<th style="text-align: center; font-size: 8px; width: 17px;">' . $i . '</th>';
+        }
+
+        $html .= '
+            </tr>
+        </thead>
+        <tbody>';
+
+        // Loop data area untuk menambahkan ke tabel
+        foreach ($area as $key => $data) {
+            $html .= '
+        <tr>
+            <td style="text-align: center; font-size: 8px;">' . ($key + 1) . '</td>
+            <td style="text-align: left; font-size: 8px; width: 140px;">' . htmlspecialchars($data->name) . '</td>
+            <td style="text-align: center; font-size: 8px; width: 100px;">' . htmlspecialchars($data->nik) . '</td>';
+
+            // Isi kolom tanggal sesuai jumlah hari dalam bulan
+            for ($i = 1; $i <= $daysInMonth; $i++) {
+                $fieldName = $i; // Misal: 'day_1', 'day_2', dst.
+                $html .= '<td style="text-align: center; font-size: 8px; width: 17px;">' . $data->$fieldName . '</td>';
+            }
+
+            $html .= '
+        </tr>';
+        }
+
+        $html .= '
+        </tbody>
+    </table>';
+
+        // Tulis HTML ke PDF
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Output PDF
+        $pdf->Output('Laporan_Jadwal.pdf', 'I'); // 'I' untuk menampilkan di browser, gunakan 'D' untuk mendownload langsung
     }
 }

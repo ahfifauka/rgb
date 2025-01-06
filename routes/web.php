@@ -102,6 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('jadwal', JadwalRgbController::class);
     Route::get('/users-jadwal-by-area', [JadwalRgbController::class, 'getUsersByArea']);
     Route::post('/upload-template', [JadwalRgbController::class, 'uploadTemplate'])->name('upload.template');
+    Route::post('/laporan-jadwal', [JadwalRgbController::class, 'generateLaporanJadwal'])->name('laporan.jadwal');
     //oprational-inventaris
     Route::resource('inventaris', InventarisRgbController::class);
 

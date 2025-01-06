@@ -19,7 +19,9 @@ class Invoice extends Model
         'periode',
         'due_date',
         'penggantian',
-        'pph',
-        'ppn',
+        'fee',
+        'tanggal_lemburan',
+        'personil_lemburan',
+        'biaya_lemburan'
     ];
 }

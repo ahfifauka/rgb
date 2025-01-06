@@ -67,7 +67,7 @@
                         </td>
                         <td class="p-3 text-center">
                             <div class="flex gap-2 justify-center">
-                                <a href="" class="flex items-center justify-center w-28 h-10 bg-green-500 hover:bg-green-600 text-white rounded-md">
+                                <a href="{{route('laporan.invoice', $account->id )}}" class="flex items-center justify-center w-28 h-10 bg-green-500 hover:bg-green-600 text-white rounded-md">
                                     <i class="fa-solid fa-download mr-2"></i> Invoice
                                 </a>
                                 <a href="{{ route('invoice.edit', $account->id) }}" class="flex items-center justify-center w-28 h-10 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md">
@@ -103,7 +103,7 @@
                 </div>
                 <div class="mb-4">
                     <label for="no_faktur" class="block text-white">No Faktur</label>
-                    <input type="number" name="no_faktur" id="no_faktur"
+                    <input type="text" name="no_faktur" id="no_faktur"
                         class="w-full px-3 py-2 border rounded-md text-black" required>
                 </div>
                 <div class="mb-4">
@@ -151,11 +151,42 @@
                     <input type="number" name="penggantian" id="penggantian"
                         class="w-full px-3 py-2 border rounded-md text-black" required>
                 </div>
+                <div class="mb-4">
+                    <label for="fee" class="block text-white">Management fee</label>
+                    <input type="number" name="fee" id="fee"
+                        class="w-full px-3 py-2 border rounded-md text-black" required>
+                </div>
+                <div class="mb-4">
+                    <label for="lemburan" class="block text-white">
+                        <input type="checkbox" id="lemburan" name="lemburan" class="mr-2">
+                        Lemburan (optional)
+                    </label>
+                </div>
+                <div id="lemburanFields" style="display: none;">
+                    <div class="mb-4">
+                        <label for="tanggal_lemburan" class="block text-white">Tanggal Lemburan</label>
+                        <input type="date" name="tanggal_lemburan" id="tanggal_lemburan"
+                            class="w-full px-3 py-2 border rounded-md text-black">
+                    </div>
+                    <div class="mb-4">
+                        <label for="personil_lemburan" class="block text-white">Personil Lemburan</label>
+                        <input type="number" name="personil_lemburan" id="personil_lemburan"
+                            class="w-full px-3 py-2 border rounded-md text-black">
+                    </div>
+                    <div class="mb-4">
+                        <label for="biaya_lemburan" class="block text-white">Biaya Lemburan</label>
+                        <input type="number" name="biaya_lemburan" id="biaya_lemburan"
+                            class="w-full px-3 py-2 border rounded-md text-black">
+                    </div>
+                </div>
                 <!-- Submit Button -->
                 <div class="flex justify-end">
-                    <button type="button" onclick="closeModal()"
-                        class="px-4 py-2 bg-gray-500 text-white rounded-md mr-2">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Simpan</button>
+                    <x-secondary-button x-on:click="$dispatch('close')">
+                        Batal
+                    </x-secondary-button>
+                    <x-primary-button class="ml-3">
+                        Simpan
+                    </x-primary-button>
                 </div>
             </div>
         </form>
@@ -177,6 +208,17 @@
                 altFormat: "j F, Y",
                 dateFormat: "Y-m-d",
             });
+        });
+    </script>
+    <script>
+        // Menampilkan dan menyembunyikan input lemburan saat checkbox dicentang
+        document.getElementById('lemburan').addEventListener('change', function() {
+            var lemburanFields = document.getElementById('lemburanFields');
+            if (this.checked) {
+                lemburanFields.style.display = 'block';
+            } else {
+                lemburanFields.style.display = 'none';
+            }
         });
     </script>
 </x-app-layout>

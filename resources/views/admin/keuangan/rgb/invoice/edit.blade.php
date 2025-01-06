@@ -66,6 +66,35 @@
                 <input type="number" name="penggantian" id="penggantian" value="{{$data->penggantian}}"
                     class="w-full px-3 py-2 border rounded-md text-black" required>
             </div>
+            <div class="mb-4">
+                <label for="fee" class="block text-white">Management fee</label>
+                <input type="number" name="fee" id="fee" value="{{$data->fee}}"
+                    class="w-full px-3 py-2 border rounded-md text-black" required>
+            </div>
+            <div class="mb-4">
+                <label for="lemburan" class="block text-white">
+                    <input type="checkbox" id="lemburan" name="lemburan" class="mr-2"
+                        @if($data->tanggal_lemburan || $data->personil_lemburan || $data->biaya_lemburan) checked @endif>
+                    Lemburan
+                </label>
+            </div>
+            <div id="lemburanFields">
+                <div class="mb-4">
+                    <label for="tanggal_lemburan" class="block text-white">Tanggal Lemburan</label>
+                    <input type="date" name="tanggal_lemburan" id="tanggal_lemburan" value="{{$data->tanggal_lemburan}}"
+                        class="w-full px-3 py-2 border rounded-md text-black">
+                </div>
+                <div class="mb-4">
+                    <label for="personil_lemburan" class="block text-white">Personil Lemburan</label>
+                    <input type="number" name="personil_lemburan" id="personil_lemburan" value="{{$data->personil_lemburan}}"
+                        class="w-full px-3 py-2 border rounded-md text-black">
+                </div>
+                <div class="mb-4">
+                    <label for="biaya_lemburan" class="block text-white">Biaya Lemburan</label>
+                    <input type="number" name="biaya_lemburan" id="biaya_lemburan" value="{{$data->biaya_lemburan}}"
+                        class="w-full px-3 py-2 border rounded-md text-black">
+                </div>
+            </div>
             <div class="flex justify-end">
                 <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-md">Simpan</button>
             </div>
@@ -92,6 +121,17 @@
                 dateFormat: "Y-m-d",
                 defaultDate: "{{ $data->due_date }}"
             });
+        });
+    </script>
+    <script>
+        // Menampilkan dan menyembunyikan input lemburan saat checkbox dicentang
+        document.getElementById('lemburan').addEventListener('change', function() {
+            var lemburanFields = document.getElementById('lemburanFields');
+            if (this.checked) {
+                lemburanFields.style.display = 'block';
+            } else {
+                lemburanFields.style.display = 'none';
+            }
         });
     </script>
 </x-app-layout>

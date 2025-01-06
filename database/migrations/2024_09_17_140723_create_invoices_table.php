@@ -23,8 +23,10 @@ return new class extends Migration
             $table->string('periode');
             $table->string('due_date');
             $table->string('penggantian');
-            $table->string('pph');
-            $table->string('ppn');
+            $table->string('fee');
+            $table->string('tanggal_lemburan');
+            $table->string('personil_lemburan');
+            $table->string('biaya_lemburan');
             $table->timestamps();
         });
     }

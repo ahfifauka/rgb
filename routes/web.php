@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function () {
     //keuangan-Invoice
     Route::resource('invoice', InvoiceRgbController::class);
     Route::get('cetak/invoice', [InvoiceRgbController::class, 'cetak'])->name('cetak.invoice');
+    Route::get('laporan/invoice/{id}', [InvoiceRgbController::class, 'laporan'])->name('laporan.invoice');
 
 
     //oprational

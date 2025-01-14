@@ -79,6 +79,8 @@
                                                             <option value="P">P</option>
                                                             <option value="M">M</option>
                                                             <option value="ST">ST</option>
+                                                            <option value="PM">PM</option>
+                                                            <option value="MD">MD</option>
                                                             <option value="O">O</option>
                                                         </select>
                                                     </td>

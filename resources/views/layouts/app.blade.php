@@ -18,6 +18,7 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
     <!-- Scripts -->
+    @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
